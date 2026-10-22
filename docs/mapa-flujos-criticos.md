@@ -4,7 +4,7 @@
 **Proyecto:** Sistema de banca virtual ParaBank
 **Sistema bajo prueba:** https://parabank.parasoft.com/parabank/
 **Versión:** 0.1 — borrador de diseño
-**Estado:** Diagrama y endpoints documentados; códigos HTTP por capturar en DevTools.
+**Estado:** Diagrama y peticiones observadas en Chromium; falta contrastarlas en DevTools; envío real de transferencia pendiente.
 
 ## 1. Propósito
 
@@ -44,19 +44,21 @@ sequenceDiagram
 
 ## 4. Endpoints REST documentados
 
-La API pública de ParaBank publica como base `https://parabank.parasoft.com/parabank/services/bank`. Las rutas y métodos siguientes se transcriben de la especificación OpenAPI del servicio; **no equivalen a una captura de las peticiones que dispara la interfaz**.
+La API pública de ParaBank publica como base `https://parabank.parasoft.com/parabank/services/bank`. También se observaron las peticiones generadas al navegar por la interfaz en Chromium, el 22 de octubre de 2026. Los identificadores variables se reemplazan por marcadores y se omite el identificador de sesión.
 
-| Flujo | Acción | Método | Endpoint documentado | Qué revisar en la respuesta | Estado HTTP visto en DevTools |
+| Flujo | Acción | Método | Endpoint observado o documentado | Qué revisar en la respuesta | Estado HTTP visto en Chromium |
 |---|---|---|---|---|---|
-| F02 | Consultar autenticación | GET | `/login/{username}/{password}` | Resultado de autenticación; no compartir credenciales en capturas | Pendiente de observar |
-| F03 | Consultar cuentas del cliente | GET | `/customers/{customerId}/accounts` | Lista de cuentas asociadas al cliente | Pendiente de observar |
-| F03 | Consultar detalle de cuenta | GET | `/accounts/{accountId}` | Identificador y datos de la cuenta | Pendiente de observar |
-| F03 | Consultar movimientos | GET | `/accounts/{accountId}/transactions` | Lista de transacciones de la cuenta | Pendiente de observar |
-| F04 | Transferir fondos | POST | `/transfer?fromAccountId={id}&toAccountId={id}&amount={monto}` | Resultado de transferencia; verificar saldos y movimiento desde la interfaz | Pendiente de observar |
+| F02 | Enviar formulario de inicio de sesión | POST | `/parabank/login.htm` | Redirige a la vista de cuentas tras aceptar la cuenta demo | 302; luego `GET /parabank/overview.htm` → 200 |
+| F03 | Consultar cuentas del cliente | GET | `/parabank/services_proxy/bank/customers/{customerId}/accounts` | Lista de cuentas asociadas al cliente | 200 |
+| F03 | Abrir actividad de cuenta | GET | `/parabank/activity.htm` | Abre la vista de actividad | 200 |
+| F03 | Consultar detalle de cuenta | GET | `/parabank/services_proxy/bank/accounts/{accountId}` | Devuelve datos de la cuenta seleccionada | 200 |
+| F03 | Consultar movimientos | GET | `/parabank/services_proxy/bank/accounts/{accountId}/transactions/month/All/type/All` | Devuelve movimientos para los filtros `All` | 200 |
+| F04 | Abrir formulario de transferencia | GET | `/parabank/transfer.htm` | Muestra formulario y carga las cuentas disponibles | 200; la carga de cuentas también respondió 200 |
+| F04 | Enviar transferencia | POST | `/parabank/services_proxy/bank/transfer` (ruta basada en la operación OpenAPI; envío no observado) | Confirmar resultado y revisar saldos/movimiento | Pendiente: no se envió una transferencia durante esta observación |
 
-**Cómo completar la última columna:** en ParaBank, abrir DevTools → **Network** → filtro **Fetch/XHR**; ejecutar cada acción en la interfaz; seleccionar la petición correspondiente y anotar el método, la ruta real y el código de estado. No copiar valores de usuario, contraseña, identificadores privados ni tokens. Si la interfaz usa otra ruta, registrar la ruta observada y dejar el endpoint OpenAPI como referencia aparte.
+**Cómo reproducir la observación:** en ParaBank, abrir DevTools → **Network** → filtro **Fetch/XHR**; iniciar sesión con una cuenta de prueba y abrir Accounts Overview, una cuenta y Transfer Funds. Seleccionar cada petición para contrastar método, ruta y estado. No copiar valores de usuario, contraseña, identificadores de cuenta ni tokens. La tabla anterior se obtuvo observando respuestas de red en Chromium; aún no se capturó la verificación en el panel DevTools. No se envió una transferencia.
 
-La especificación OpenAPI declara las operaciones y sus respuestas de datos, pero no proporciona en esta tabla un código HTTP concreto observado durante una ejecución. Por eso los estados quedan pendientes y no se presentan como verificados.
+La operación de transferencia está declarada como `POST /transfer` en la especificación OpenAPI; su ruta de proxy y estado al enviar desde la interfaz siguen pendientes de observación. Los estados de las otras filas corresponden a respuestas observadas durante la navegación en Chromium; aún conviene contrastarlos en DevTools para la evidencia de clase.
 
 ## 5. Plantilla de caso de prueba
 
@@ -100,4 +102,4 @@ La imagen de notas exploratorias compartida para el proyecto indica una sesión 
 - `docs/casos-manuales-v1.md`: definición de los flujos F01–F06 y casos de prueba manuales.
 - `docs/plan-de-pruebas-v1.md`: alcance, estrategia, criterios, entorno y riesgos.
 
-**Pendiente para completar la evidencia de la sesión:** observar en DevTools al menos cinco peticiones reales desde la interfaz y completar método, endpoint y estado HTTP. No asumir que cada operación documentada en OpenAPI es llamada por la interfaz de la misma forma.
+**Pendiente para completar la evidencia de la sesión:** guardar una captura de DevTools con al menos cinco peticiones reales y completar método, endpoint y estado HTTP. No asumir que cada operación documentada en OpenAPI es llamada por la interfaz de la misma forma.

@@ -1,11 +1,11 @@
 # Casos de prueba manuales v1 — ParaBank
 
-**Curso:** QA Automatizador — Tecsup  
-**Proyecto:** Sistema de banca virtual ParaBank  
-**Sistema bajo prueba:** https://parabank.parasoft.com/parabank/  
-**Versión del documento:** 1.0  
-**Fecha:** 13 de octubre de 2026  
-**Estado:** Borrador completo para ejecución y validación
+**Curso:** QA Automatizador — Tecsup
+**Proyecto:** Sistema de banca virtual ParaBank
+**Sistema bajo prueba:** https://parabank.parasoft.com/parabank/
+**Versión del documento:** 1.0
+**Fecha inicial:** 13 de octubre de 2026 · **Actualizado:** 22 de octubre de 2026
+**Estado:** Diseño actualizado; ejecución funcional pendiente. Se documenta por separado una comprobación de accesibilidad del formulario de login.
 
 ---
 
@@ -73,7 +73,7 @@ Se realizará una evaluación básica de accesibilidad y usabilidad siguiendo la
 
 ## 2. Casos de prueba por flujo
 
-**Convenciones:** CP = caso de prueba; F = flujo crítico; CE = partición de equivalencia; VL = valor límite. La prioridad se refiere al impacto del flujo. **Todos los casos están por ejecutar o confirmar**: no se registran observaciones simuladas como hechos. Las reglas de validación no publicadas por ParaBank se consideran **criterios propuestos / por confirmar**, no especificaciones oficiales.
+**Convenciones:** CP = caso de prueba; F = flujo crítico; CE = partición de equivalencia; VL = valor límite. La prioridad se refiere al impacto del flujo. Los casos funcionales CP-01 a CP-14 están por ejecutar. Las reglas no publicadas por ParaBank son criterios propuestos, no requisitos oficiales. La comprobación ACC-01 se observó en el DOM/árbol de accesibilidad con Chromium; falta revisión con lector de pantalla.
 
 ### CP-01 — Registro con datos válidos (F01)
 - **Tipo / nivel:** Funcional / sistema. **Técnica:** CE válida. **Prioridad:** Alta.
@@ -171,30 +171,58 @@ Se realizará una evaluación básica de accesibilidad y usabilidad siguiendo la
 - **Resultado esperado:** No completar la recuperación con información obligatoria incompleta y mostrar validación comprensible (**criterio propuesto según campos visibles**).
 - **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-12-recuperacion-vacio.png` (por adjuntar).
 
+### CP-13 — Registro con un campo obligatorio vacío (F01)
+- **Tipo / nivel:** Funcional / sistema. **Técnica:** CE inválida. **Prioridad:** Alta.
+- **Precondición:** formulario de registro abierto; identificar un campo marcado como requerido en la interfaz.
+- **Datos:** Datos ficticios válidos en los demás campos; dejar vacío un campo requerido.
+- **Pasos:** 1) Abrir *Register*. 2) Completar los campos con datos ficticios. 3) Dejar vacío un campo indicado como obligatorio. 4) Enviar el formulario.
+- **Resultado esperado:** No se completa el registro y se informa qué dato falta (criterio propuesto a partir del requisito de campos completos).
+- **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-13-registro-campo-vacio.png` (por adjuntar).
+
+### CP-14 — Registro con nombre de usuario ya utilizado (F01)
+- **Tipo / nivel:** Funcional / sistema. **Técnica:** CE inválida. **Prioridad:** Alta.
+- **Precondición:** disponer de un nombre de usuario ficticio ya registrado y formulario de registro abierto.
+- **Datos:** Datos ficticios completos; reutilizar exactamente el usuario de prueba existente.
+- **Pasos:** 1) Abrir *Register*. 2) Completar datos válidos y contraseñas coincidentes. 3) Usar el nombre de usuario ya registrado. 4) Enviar el formulario.
+- **Resultado esperado:** No se crea una segunda cuenta con el mismo usuario y se indica que el nombre no está disponible (criterio propuesto; confirmar el texto real).
+- **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-14-usuario-duplicado.png` (por adjuntar).
+
+### ACC-01 — Login: campos con nombre accesible (F02 / accesibilidad)
+- **Tipo / nivel:** Accesibilidad / sistema. **Técnica:** inspección de nombre accesible y etiquetas. **Prioridad:** Media, sujeta a evaluación del impacto.
+- **Precondición:** formulario de inicio de sesión abierto en Chromium.
+- **Pasos:** 1) Inspeccionar Username y Password en DOM/árbol de accesibilidad. 2) Comprobar asociación con `<label>`, `aria-label` o `aria-labelledby`, y consulta por rol/nombre. 3) Confirmar con lector de pantalla como seguimiento.
+- **Resultado esperado:** cada campo expone un nombre accesible que identifica su propósito.
+- **Resultado observado:** durante la inspección, ambos inputs no tenían `<label>` asociado, `aria-label`, `aria-labelledby`, placeholder ni title; las consultas por rol/nombre y por label no encontraban esos campos. El texto visible cercano no estaba asociado programáticamente.
+- **Estado:** Observación técnica reproducida en Chromium; pendiente de comprobación con lector de pantalla y de registrar un defecto en Jira. No afirmar que teclado o foco fallan.
+- **Evidencia:** `evidencias/ACC-01-login-formulario.png` y `evidencias/ACC-01-login-formulario.md`.
+
 ### Resumen de cobertura planificada
 
 | Flujo | Casos asociados | Total |
 |---|---|---:|
-| F01 Registro | CP-01, CP-02 | 2 |
+| F01 Registro | CP-01, CP-02, CP-13, CP-14 | 4 |
 | F02 Inicio de sesión | CP-03, CP-04 | 2 |
 | F03 Consulta de cuentas | CP-05 | 1 |
 | F04 Transferencias | CP-06, CP-07, CP-08, CP-09 | 4 |
 | F05 Contacto | CP-10 | 1 |
 | F06 Recuperación de acceso | CP-11, CP-12 | 2 |
-| **Total** | **12 casos diseñados; 0 ejecuciones documentadas** | **12** |
+| F02 / Accesibilidad | ACC-01 | 1 observación |
+| **Total** | **14 casos funcionales diseñados y 1 comprobación de accesibilidad** | **14 + 1** |
 
 ---
 
 ## 3. Defectos: registro y clasificación
 
-**Diferencia:** *severidad* indica el impacto, *prioridad* indica urgencia de corrección. No se debe confundir una observación con un defecto confirmado. Los siguientes ítems constituyen hipótesis de investigación procedentes del seguimiento preliminar del proyecto y no verificaciones nuevas.
+**Diferencia:** *severidad* indica el impacto, *prioridad* indica urgencia de corrección. Las observaciones siguientes se transcriben de las notas compartidas; ninguna se presenta como defecto funcional confirmado.
 
 | ID provisional | Hallazgo por revisar | Caso relacionado | Severidad | Prioridad | Estado | Confirmación necesaria |
 |---|---|---|---|---|---|---|
-| OBS-01 | Posible transferencia a la misma cuenta | CP-09 | Por definir | Por definir | Por reproducir | Regla permitida o prohibida y efecto real en saldo |
-| OBS-02 | Posible transferencia superior al saldo | CP-08 | Por definir | Por definir | Por reproducir | Política de sobregiro y saldos antes/después |
-| OBS-03 | Error interno reportado en una operación, sin contexto completo | Por vincular | Por definir | Por definir | Por reproducir | URL/pantalla, pasos, datos, fecha, respuesta y captura |
-| OBS-04 | Posible problema en recuperación de credenciales | CP-11 / CP-12 | Por definir | Por definir | Por reproducir | Datos de entrada y resultado esperado sustentado |
+| OBS-01 | La nota indica transferencia de S/ 0.00 entre cuentas diferentes | CP-07 | Por definir | Por definir | Transcrito; por reproducir | Repetir y registrar regla, mensaje y saldos |
+| OBS-02 | La nota indica transferencia de S/ 0.00 a la misma cuenta | CP-07 / CP-09 | Por definir | Por definir | Transcrito; por reproducir | Confirmar cuentas elegidas, efecto y regla esperada |
+| OBS-03 | La nota indica importe mayor al saldo disponible | CP-08 | Por definir | Por definir | Transcrito; por reproducir | Confirmar política de sobregiro y saldos antes/después |
+| OBS-04 | La nota indica transferencia positiva a la misma cuenta | CP-09 | Por definir | Por definir | Transcrito; por reproducir | Registrar respuesta, movimiento y saldos |
+| OBS-05 | La nota indica que no se logró recuperar la cuenta con Forgot Login Info | CP-11 | Por definir | Por definir | Transcrito; por reproducir | Probar datos ficticios verificados y guardar mensaje exacto |
+| OBS-A11Y-01 | Campos de login sin nombre programático en la inspección Chromium | ACC-01 | Por evaluar | Por evaluar | Observación técnica; lector de pantalla pendiente | Completar prueba con tecnología de asistencia |
 
 **Plantilla para convertir un hallazgo reproducido en defecto (DEF-XX):**
 - **Título y módulo:** [completar].
@@ -208,7 +236,7 @@ Se realizará una evaluación básica de accesibilidad y usabilidad siguiendo la
 - **Severidad y prioridad:** [nivel y explicación por separado].
 - **Estado y ticket de Jira:** [por completar].
 
-**Nota:** el modelo de Semana 3 contempla un reporte de al menos **cinco defectos documentados**. No inventar defectos para alcanzar esa cifra; explorar nuevos flujos y clasificar los hallazgos no confirmados como pendientes.
+**Nota:** las notas aportadas documentan cinco candidatos, no cinco defectos confirmados. No inventar resultados para alcanzar el número requerido por el curso; reproducirlos y documentar el resultado real.
 
 ---
 
@@ -218,9 +246,10 @@ Se aplicarán las **cinco comprobaciones rápidas** de la sesión 6 a los flujos
 
 | ID | Revisión | Procedimiento manual | Resultado | Evidencia |
 |---|---|---|---|---|
-| ACC-01 | Teclado | Navegar por el login usando Tab, Shift+Tab y Enter; comprobar orden y foco visible | Por ejecutar | `evidencias/ACC-01-teclado.png` (pendiente) |
-| ACC-02 | Etiquetas y mensajes | Comprobar que cada campo de *Transfer Funds* tenga etiqueta comprensible y que errores indiquen qué corregir | Por ejecutar | `evidencias/ACC-02-formularios.png` (pendiente) |
-| ACC-03 | Contraste y nombres | Revisar contraste de texto y legibilidad de enlaces/botones; usar Lighthouse solo como apoyo y confirmar a mano | Por ejecutar | `evidencias/ACC-03-contraste.png` (pendiente) |
+| ACC-01 | Nombres accesibles del login | Inspeccionar nombre accesible de Username y Password; completar con lector de pantalla | DOM/árbol de accesibilidad: ambos campos sin nombre programático; lector de pantalla pendiente | `evidencias/ACC-01-login-formulario.png` y `.md` |
+| ACC-02 | Teclado | Navegar por el login usando Tab, Shift+Tab y Enter; comprobar orden y foco visible | Parcial: Tab avanzó por enlaces y el foco observado fue visible; falta completar Shift+Tab/Enter y dejar evidencia específica | Pendiente |
+| ACC-03 | Transferencia y mensajes | Comprobar etiquetas de *Transfer Funds* y claridad de errores | Por ejecutar | Pendiente |
+| ACC-04 | Contraste y texto alternativo | Revisar contraste, nombres de botones/enlaces y texto alternativo de imágenes | Por ejecutar | Pendiente |
 
 **Pendientes de inspección complementaria:** verificar si las imágenes informativas disponen de texto alternativo significativo, y si la navegación sigue siendo comprensible sin depender únicamente del color. Estos son **tres objetivos de revisión, no tres problemas detectados**. Al terminar, sustituir por 2–3 hallazgos concretos si efectivamente aparecen, con criterio, pasos, impacto y clasificación; si no aparecen, registrar "sin hallazgos en esta prueba".
 
@@ -231,7 +260,7 @@ Se aplicarán las **cinco comprobaciones rápidas** de la sesión 6 a los flujos
 **Herramienta indicada por el curso:** Jira Free. **Estado:** falta verificar la existencia del proyecto y tickets, y adjuntar evidencia.
 
 1. Crear o identificar el proyecto Jira del QA de ParaBank.
-2. Registrar los casos **CP-01 a CP-12** como incidencias de tipo *Caso de prueba* (o tipo equivalente configurado), con pasos, esperado, prioridad y estado.
+2. Registrar los casos **CP-01 a CP-14** como incidencias de tipo *Caso de prueba* (o tipo equivalente configurado), con pasos, esperado, prioridad y estado.
 3. Abrir tickets de tipo *Defecto* **solo tras reproducir y sustentar** cada hallazgo.
 4. Enlazar cada defecto con su caso de prueba y registrar el resultado de ejecución.
 5. Adjuntar aquí **URL real del proyecto Jira: [por completar]**, más captura `evidencias/jira-casos.png` [pendiente].
@@ -251,7 +280,7 @@ Se utilizó IA como **apoyo de redacción y diseño** para organizar casos vincu
 ## Lista de verificación antes de entregar
 
 - [x] Documento de seis secciones con alcance y mapa F01–F06.
-- [x] Doce casos diseñados (más del mínimo de ocho); equivalencia y límites documentados.
+- [x] Catorce casos funcionales diseñados; equivalencia y límites documentados.
 - [ ] Ejecutar casos y completar resultados obtenidos y capturas.
 - [ ] Verificar reglas de negocio propuestas frente a interfaz y documentación disponible.
 - [ ] Sustentar y clasificar defectos reales, si los hay.
