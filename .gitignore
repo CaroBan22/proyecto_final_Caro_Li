@@ -1,0 +1,10 @@
+parabank-login.spec.js
+!tests/parabank-login.spec.js
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

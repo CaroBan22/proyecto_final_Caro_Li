@@ -1,0 +1,27 @@
+{
+  "name": "proyecto_final_caro_li",
+  "version": "1.0.0",
+  "description": "Proyecto académico de aseguramiento de calidad de software, desarrollado para el curso QA Automatizador de Tecsup.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaroBan22/proyecto_final_Caro_Li.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CaroBan22/proyecto_final_Caro_Li/issues"
+  },
+  "homepage": "https://github.com/CaroBan22/proyecto_final_Caro_Li#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5"
+  }
+}
