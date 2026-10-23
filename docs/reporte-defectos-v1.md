@@ -1,86 +1,59 @@
 # Reporte de defectos y hallazgos v1 — ParaBank
 
-**Curso:** QA Automatizador · **Fecha:** 19/10/2026 · **Sitio:** https://parabank.parasoft.com/parabank/  
-**Estado del documento:** 5 **candidatos de investigación**, **0 defectos confirmados en los materiales recibidos**. Este archivo **no sustituye** las 5 verificaciones reales exigidas por el docente.
+**Curso:** QA Automatizador · **Sitio:** https://parabank.parasoft.com/parabank/
+**Actualizado:** 22/10/2026 · **Estado:** cinco candidatos transcritos de las notas exploratorias; cero defectos funcionales confirmados de forma independiente. Se registra además una observación técnica de accesibilidad pendiente de confirmación con lector de pantalla.
 
-## 1. Resumen y vinculación con la matriz
+> Las notas de la sesión y la inspección técnica son fuentes distintas. Un comportamiento anotado en la imagen no equivale a una reproducción actual. Las reglas esperadas para monto cero, sobregiro y transferencia a la misma cuenta siguen por confirmar.
 
-| Código | Hallazgo que se investigará | Requisito | Caso asociado | Severidad / prioridad | Estado |
-|---|---|---|---|---|---|
-| DEF-01 | Posible aceptación de registro con confirmación de contraseña diferente | R01 | CP-02 | Por determinar | **Hipótesis; no ejecutado** |
-| DEF-02 | Posible error interno al realizar operación bancaria | R04 | CP-06 (si ocurre allí; por confirmar) | Por determinar | **Observación preliminar; sin reproducción** |
-| DEF-03 | Posible procesamiento de monto superior al saldo | R05 | CP-08 | Por determinar | **Hipótesis; regla de sobregiro pendiente** |
-| DEF-04 | Posible transferencia a la misma cuenta | R05 | CP-09 | Por determinar | **Hipótesis; regla de negocio pendiente** |
-| DEF-05 | Posible problema al recuperar credenciales | R07 | CP-11 / CP-12 | Por determinar | **Observación preliminar; sin reproducción** |
+## 1. Resumen de candidatos
 
-**Cómo computar los cinco:** un `DEF` de esta tabla se considera *confirmado* solo si cuenta con precondiciones, reproducción, resultado esperado sustentado, resultado obtenido y captura. Si no sucede, anotar `No reproducido` y sustituirlo por un hallazgo real.
+| ID | Hallazgo anotado | Requisito / caso | Estado y validación pendiente |
+|---|---|---|---|
+| OBS-01 | La nota indica que se aceptó transferir S/ 0.00 entre cuentas diferentes. | R05 / CP-07 | Transcrito de la imagen; reproducir y guardar mensaje/saldos antes y después. |
+| OBS-02 | La nota indica que se aceptó transferir S/ 0.00 a la misma cuenta. | R05 / CP-07 y CP-09 | Transcrito; confirmar cuentas seleccionadas, efecto y regla esperada. |
+| OBS-03 | La nota indica que se aceptaron montos mayores al saldo disponible. | R05 / CP-08 | Transcrito; falta saldo inicial/final y política de sobregiro. |
+| OBS-04 | La nota indica que se aceptó una transferencia positiva a la misma cuenta. | R05 / CP-09 | Transcrito; reproducir y revisar movimiento/saldos y regla de negocio. |
+| OBS-05 | La nota indica que no se logró recuperar la cuenta con *Forgot Login Info*. | R07 / CP-11 | Transcrito; probar datos ficticios verificados y guardar mensaje exacto. |
+| OBS-A11Y-01 | Los campos Username y Password no exponen nombre accesible en la inspección DOM/árbol de accesibilidad de Chromium. | R02 / ACC-01 | Observación técnica reproducida; falta validar con lector de pantalla y clasificar impacto antes de confirmar defecto. |
 
-## 2. Fichas técnicas de investigación
+**Conteo:** 5 candidatos de la imagen sin reproducción actual; 1 observación técnica de accesibilidad con inspección DOM; 0 defectos confirmados con ficha completa. No se debe presentar este conteo como cinco defectos verificados.
 
-### DEF-01 — Confirmación de contraseña diferente (R01 / CP-02)
-- **Precondición:** formulario Register, datos ficticios completos, usuario único.
-- **Pasos:** (1) Abrir Register; (2) completar datos; (3) escribir contraseñas distintas; (4) pulsar Register.
-- **Esperado (criterio propuesto):** no se crea la cuenta; aparece mensaje de discrepancia.
-- **Obtenido:** **Por ejecutar**. No afirmar aceptación sin comprobarlo.
-- **Evidencia:** `evidencias/DEF-01.png` (pendiente).
-- **Severidad / prioridad:** pendiente de evaluar impacto tras confirmación.
+## 2. Ficha de seguimiento para OBS-01 a OBS-05
 
-### DEF-02 — Error interno durante operación bancaria (R04 / CP-06, asociación provisional)
-- **Precondición:** usuario autenticado; dos cuentas de prueba y saldos registrados.
-- **Pasos:** (1) Ir a Transfer Funds; (2) elegir cuentas distintas; (3) introducir monto positivo dentro del saldo; (4) enviar y observar.
-- **Esperado:** confirmación y actualización coherente de saldos.
-- **Obtenido:** **Por reproducir**. Hay referencia preliminar a un error interno, pero faltan contexto, operación y mensaje exactos.
-- **Evidencia:** `evidencias/DEF-02.png` (pendiente).
-- **Severidad / prioridad:** por clasificar tras verificar operación y alcance del fallo.
+Para cada candidato, completar al reproducir:
 
-### DEF-03 — Monto superior al saldo (R05 / CP-08)
-- **Precondición:** registrar saldo disponible S en cuenta origen.
-- **Pasos:** (1) Consultar saldo S; (2) Transfer Funds; (3) elegir destino distinto; (4) intentar monto S + 0.01; (5) verificar mensaje y nuevos saldos.
-- **Esperado:** **Regla pendiente de confirmar**; no asumir prohibición de sobregiro.
-- **Obtenido:** **Por ejecutar**.
-- **Evidencia:** `evidencias/DEF-03.png` (pendiente).
-- **Severidad / prioridad:** por determinar solo si hay regla incumplida.
+- **Fecha/hora, navegador y URL:** pendiente.
+- **Precondiciones y datos ficticios:** pendiente; para transferencias, anotar cuentas de prueba sin publicar IDs sensibles.
+- **Pasos numerados y repetibles:** pendiente de reconstrucción; las notas originales no los incluyen.
+- **Resultado esperado y fundamento:** pendiente de regla documentada/consensuada.
+- **Resultado obtenido exacto:** pendiente de nueva ejecución.
+- **Saldo y movimientos antes/después:** pendiente para OBS-01 a OBS-04.
+- **Evidencia:** pendiente; no existe captura individual por hallazgo en la imagen compartida.
+- **Severidad, prioridad y Jira:** asignar solamente después de confirmar el incumplimiento.
 
-### DEF-04 — Transferencia a la misma cuenta (R05 / CP-09)
-- **Precondición:** sesión iniciada, cuenta de prueba A.
-- **Pasos:** (1) Transfer Funds; (2) intentar A como origen y destino; (3) transferir 1.00 si deja; (4) revisar confirmación y movimientos.
-- **Esperado:** **Por confirmar** si el sistema la prohíbe o admite operación sin cambio neto.
-- **Obtenido:** **Por ejecutar**.
-- **Evidencia:** `evidencias/DEF-04.png` (pendiente).
-- **Severidad / prioridad:** por determinar tras confirmar política y efecto.
+## 3. Ficha técnica — OBS-A11Y-01 (caso ACC-01)
 
-### DEF-05 — Recuperación de credenciales (R07 / CP-11–CP-12)
-- **Precondición:** cuenta ficticia registrada y datos de registro disponibles.
-- **Pasos:** (1) Cerrar sesión; (2) Forgot Login Info; (3) enviar primero datos coincidentes y después un campo obligatorio vacío; (4) registrar respuestas exactas.
-- **Esperado:** recuperación coherente para datos coincidentes y validación comprensible de campos obligatorios, según pantalla.
-- **Obtenido:** **Por ejecutar**.
-- **Evidencia:** `evidencias/DEF-05.png` (pendiente).
-- **Severidad / prioridad:** por determinar si hay incumplimiento observado.
+**Título provisional:** Los campos del formulario de inicio de sesión no exponen nombre accesible en el DOM inspeccionado.
+**Módulo / requisito / caso:** Login · R02 · ACC-01.
+**Criterio de referencia:** evaluar contra WCAG 2.2, criterio 4.1.2 *Name, Role, Value* ([W3C](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)).
+**Entorno observado:** Chromium, 22/10/2026; ParaBank público.
+**Pasos:** abrir el login; inspeccionar los inputs `username` y `password`; consultar asociación `<label>`, `aria-label`, `aria-labelledby`, placeholder/title y búsqueda por rol/nombre o label.
+**Resultado observado:** ambos inputs carecían de esos atributos/asociaciones; las consultas accesibles por nombre no los encontraban.
+**Resultado esperado:** ambos campos deben anunciar un nombre que identifique su propósito.
+**Evidencia:** `evidencias/ACC-01-login-formulario.png` y `evidencias/ACC-01-login-formulario.md`.
+**Límite:** esta inspección sustenta que falta un nombre programático en el DOM/árbol revisado. Aún no se probó con lector de pantalla; el impacto final y la clasificación de defecto quedan por confirmar. No se observó una falla de teclado.
 
-## 3. Comunicación del hallazgo a dos públicos — EJEMPLO CONDICIONAL
+## 4. Comunicación del hallazgo ACC-01
 
-### Versión técnica para QA / desarrollo (DEF-02, solo si se reproduce)
+**Versión técnica:** En el formulario de acceso, los inputs de usuario y contraseña no presentan una etiqueta asociada ni un nombre accesible mediante `aria-label` o `aria-labelledby`. En Chromium, las consultas por rol/nombre y por etiqueta no localizaron los campos. Revisar con lector de pantalla y añadir nombres programáticos asociados a cada control. La observación está respaldada por la evidencia ACC-01; impacto y prioridad pendientes de evaluación.
 
-**Título propuesto:** Error interno al confirmar una transferencia válida entre cuentas de prueba.  
-**Módulo / requisito / caso:** Transfer Funds · R04 · CP-06.  
-**Reproducción:** iniciar sesión; anotar saldos; elegir origen y destino distintos; ingresar monto positivo dentro del disponible; confirmar.  
-**Esperado:** respuesta de confirmación y movimientos coherentes.  
-**Obtenido:** **[Incluir texto exacto del error, fecha/hora, URL y captura después de reproducir]**.  
-**Impacto:** **[Determinar si operación queda interrumpida y si hubo cambios de saldo]**.  
-**Severidad / prioridad:** por valorar con base en impacto reproducido.
+**Versión para quien decide:** La revisión técnica del formulario encontró que las cajas de usuario y contraseña tienen texto visible, pero ese texto no aparece asociado al control para tecnologías de asistencia en la inspección realizada. Falta comprobar la experiencia con lector de pantalla y priorizar la corrección.
 
-### Versión para quien decide (del mismo DEF-02, condicional)
+## 5. Cierre y trazabilidad
 
-> Estamos revisando un posible problema en el proceso de transferencias de ParaBank. Si se confirma, podría impedir completar una operación y afectar la confianza en el flujo. Antes de asignar urgencia o afirmar impacto, verificaremos si el error se reproduce, cuántas operaciones afecta y si los saldos permanecen correctos. Presentaremos capturas y una recomendación de prioridad al finalizar la comprobación.
+Los casos CP-07, CP-08, CP-09 y CP-11 permiten reproducir los candidatos funcionales. Registrar el resultado real, incluso si no se reproduce. Mantener cada hipótesis como no confirmada mientras falte una regla esperada verificable o evidencia suficiente. Vincular un ticket Jira solo cuando exista; actualmente no se proporciona URL ni evidencia de tickets.
 
-## 4. Registro de ejecución y evidencias — completar HOY
-
-| DEF | Fecha/hora | Navegador | Regla comprobada | Resultado observado | Captura | ¿Confirmado? | Severidad | Prioridad | Jira |
-|---|---|---|---|---|---|---|---|---|---|
-| DEF-01 | — | — | — | — | — | No | — | — | — |
-| DEF-02 | — | — | — | — | — | No | — | — | — |
-| DEF-03 | — | — | — | — | — | No | — | — | — |
-| DEF-04 | — | — | — | — | — | No | — | — | — |
-| DEF-05 | — | — | — | — | — | No | — | — | — |
-
-**Nota de integridad académica:** no transformar estos cinco escenarios en cinco defectos reales sin pruebas. Es correcto entregar el avance documentado y explicar qué está por confirmar, si no alcanza el tiempo.
+| Registro | Fuente/evidencia | Confirmado como defecto | Jira |
+|---|---|---|---|
+| OBS-01 a OBS-05 | Imagen de notas exploratorias; reproducción pendiente | No | No proporcionado |
+| OBS-A11Y-01 | Inspección DOM/árbol y captura ACC-01 | Observación técnica; clasificación pendiente | No proporcionado |
