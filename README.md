@@ -33,7 +33,7 @@ Evaluar flujos funcionales y aspectos básicos de accesibilidad mediante diseño
 
 ## 6. Estructura
 
-- `docs/`: plan, casos manuales, matriz, tabla de decisión, borrador de reglas verificables, reporte, sesión exploratoria y mapa de flujos.
+- `docs/`: plan, casos manuales, matriz, tabla de decisión, reglas del proyecto, reporte, sesión exploratoria y mapa de flujos.
 - `tests/`: pruebas Playwright de ParaBank y archivos de ejemplo.
 - `evidencias/`: capturas y fichas de evidencia.
 - `playwright.config.js`, `package.json`: configuración y dependencias de Playwright.

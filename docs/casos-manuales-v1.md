@@ -123,20 +123,20 @@ Se realizará una evaluación básica de accesibilidad y usabilidad siguiendo la
 - **Resultado esperado:** Se confirma la operación; el importe se descuenta de A y se acredita en B una sola vez, según las reglas disponibles.
 - **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-06-transferencia-valida.png` (por adjuntar).
 
-### CP-07 — Transferencia de monto cero (F04)
-- **Tipo / nivel:** Funcional / sistema. **Técnica:** VL inferior (0 frente a un monto positivo) y CE inválida propuesta. **Prioridad:** Alta.
+### CP-07 — Rechazo de importes cero y negativos (F04)
+- **Tipo / nivel:** Funcional / sistema. **Técnica:** VL inferior y CE inválida. **Prioridad:** Alta.
 - **Precondición:** Sesión iniciada; cuentas origen y destino de prueba disponibles.
-- **Datos:** Monto `0.00`.
-- **Pasos:** 1) Abrir *Transfer Funds*. 2) Introducir `0.00`. 3) Seleccionar cuentas. 4) Confirmar y observar mensaje y saldos.
-- **Resultado esperado:** **Por confirmar con la regla del sistema**: como criterio de prueba propuesto, no registrar una transferencia de valor cero e informar al usuario.
-- **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-07-monto-cero.png` (por adjuntar).
+- **Datos:** Probar por separado `0.00` y `-0.01`.
+- **Pasos:** 1) Abrir *Transfer Funds*. 2) Seleccionar cuentas de prueba. 3) Introducir el valor de cada intento. 4) Enviar y comprobar el mensaje, el historial y que los saldos no cambien ni queden por debajo de cero.
+- **Resultado esperado acordado para el proyecto:** Rechazar ambos importes, no crear movimiento y conservar los saldos. Este criterio no afirma que ParaBank ya lo cumpla; observar y guardar el resultado real.
+- **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-07-importes-no-positivos.png` (por adjuntar).
 
 ### CP-08 — Transferencia superior al saldo disponible (F04)
 - **Tipo / nivel:** Funcional / sistema. **Técnica:** VL superior al saldo disponible; CE inválida propuesta. **Prioridad:** Alta.
 - **Precondición:** Sesión iniciada; saldo disponible de cuenta A registrado antes de la operación.
 - **Datos:** Si el disponible es `S`, probar monto `S + 0.01` (moneda y precisión según interfaz).
 - **Pasos:** 1) Consultar y anotar saldo disponible S. 2) Abrir *Transfer Funds*. 3) Seleccionar A y B. 4) Ingresar monto superior a S. 5) Confirmar; comprobar saldos y mensajes.
-- **Resultado esperado:** **Por confirmar**: se debe definir si se permiten saldos negativos o sobregiros en la demo antes de clasificar la operación como defecto. Si se establece la prohibición, debe rechazarse sin variar saldos.
+- **Resultado esperado acordado para el proyecto:** Rechazar la operación y no crear movimiento; ningún saldo debe quedar por debajo de cero. Registrar el comportamiento real de ParaBank y contrastarlo con este criterio.
 - **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-08-saldo-insuficiente.png` (por adjuntar).
 
 ### CP-09 — Transferencia hacia la misma cuenta (F04)
