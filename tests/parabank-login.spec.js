@@ -14,16 +14,15 @@ test('muestra el enlace de registro', async ({ page }) => {
     page.getByRole('link', { name: 'Register' })
   ).toBeVisible();
 });
-test('muestra un error al iniciar sesión con credenciales incorrectas', async ({ page }) => {
+test('no permite iniciar sesión con credenciales incorrectas', async ({ page }) => {
   await page.goto('https://parabank.parasoft.com/parabank/');
 
   await page.locator('input[name="username"]').fill('usuario_invalido');
   await page.locator('input[name="password"]').fill('clave_invalida');
   await page.getByRole('button', { name: 'Log In' }).click();
 
-  await expect(page.locator('#rightPanel')).toContainText(
-    'The username and password could not be verified'
-  );
+  // RB-05: credenciales inválidas no deben dar acceso a una sesión autenticada.
+  await expect(page.getByRole('link', { name: 'Log Out' })).toHaveCount(0);
 });
 
 test('muestra un mensaje si se inicia sesión con campos vacíos', async ({ page }) => {
