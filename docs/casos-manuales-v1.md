@@ -73,7 +73,7 @@ Se realizará una evaluación básica de accesibilidad y usabilidad siguiendo la
 
 ## 2. Casos de prueba por flujo
 
-**Convenciones:** CP = caso de prueba; F = flujo crítico; CE = partición de equivalencia; VL = valor límite. La prioridad se refiere al impacto del flujo. Los casos funcionales CP-01 a CP-14 están por ejecutar. Las reglas no publicadas por ParaBank son criterios propuestos, no requisitos oficiales. La comprobación ACC-01 se observó en el DOM/árbol de accesibilidad con Chromium; falta revisión con lector de pantalla.
+**Convenciones:** CP = caso de prueba; F = flujo crítico; CE = partición de equivalencia; VL = valor límite. La prioridad se refiere al impacto del flujo. Los casos funcionales CP-01 a CP-15 están por ejecutar. Las reglas no publicadas por ParaBank son criterios propuestos, no requisitos oficiales. La comprobación ACC-01 se observó en el DOM/árbol de accesibilidad con Chromium; falta revisión con lector de pantalla.
 
 ### CP-01 — Registro con datos válidos (F01)
 - **Tipo / nivel:** Funcional / sistema. **Técnica:** CE válida. **Prioridad:** Alta.
@@ -171,12 +171,12 @@ Se realizará una evaluación básica de accesibilidad y usabilidad siguiendo la
 - **Resultado esperado:** No completar la recuperación con información obligatoria incompleta y mostrar validación comprensible (**criterio propuesto según campos visibles**).
 - **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-12-recuperacion-vacio.png` (por adjuntar).
 
-### CP-13 — Registro con un campo obligatorio vacío (F01)
+### CP-13 — Registro con un campo personal obligatorio vacío (F01)
 - **Tipo / nivel:** Funcional / sistema. **Técnica:** CE inválida. **Prioridad:** Alta.
 - **Precondición:** formulario de registro abierto; identificar un campo marcado como requerido en la interfaz.
-- **Datos:** Datos ficticios válidos en los demás campos; dejar vacío un campo requerido.
-- **Pasos:** 1) Abrir *Register*. 2) Completar los campos con datos ficticios. 3) Dejar vacío un campo indicado como obligatorio. 4) Enviar el formulario.
-- **Resultado esperado:** No se completa el registro y se informa qué dato falta (criterio propuesto a partir del requisito de campos completos).
+- **Datos:** Datos ficticios válidos en los demás campos; dejar vacío City y completar Username, Password y Confirm con credenciales válidas.
+- **Pasos:** 1) Abrir *Register*. 2) Completar los campos con datos ficticios. 3) Dejar City vacío. 4) Enviar el formulario.
+- **Resultado esperado:** No se completa el registro y se identifica City como dato faltante (criterio propuesto).
 - **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-13-registro-campo-vacio.png` (por adjuntar).
 
 ### CP-14 — Registro con nombre de usuario ya utilizado (F01)
@@ -186,6 +186,14 @@ Se realizará una evaluación básica de accesibilidad y usabilidad siguiendo la
 - **Pasos:** 1) Abrir *Register*. 2) Completar datos válidos y contraseñas coincidentes. 3) Usar el nombre de usuario ya registrado. 4) Enviar el formulario.
 - **Resultado esperado:** No se crea una segunda cuenta con el mismo usuario y se indica que el nombre no está disponible (criterio propuesto; confirmar el texto real).
 - **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-14-usuario-duplicado.png` (por adjuntar).
+
+### CP-15 — Registro con usuario duplicado y contraseñas distintas (F01)
+- **Tipo / nivel:** Funcional / sistema. **Técnica:** tabla de decisión, combinación D04. **Prioridad:** Alta.
+- **Precondición:** disponer de un usuario ficticio ya registrado.
+- **Datos:** Datos personales completos; reutilizar el usuario existente; ingresar contraseña y confirmación distintas.
+- **Pasos:** 1) Abrir *Register*. 2) Completar todos los datos personales. 3) Ingresar el usuario ya registrado. 4) Ingresar dos contraseñas distintas. 5) Enviar y registrar todos los mensajes mostrados.
+- **Resultado esperado propuesto:** No se crea la cuenta y se informa tanto la discrepancia de contraseñas como la indisponibilidad del usuario. Si la interfaz valida en pasos, registrar el orden y dejar el caso pendiente de confirmar criterio.
+- **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-15-registro-errores-combinados.png` (por adjuntar).
 
 ### ACC-01 — Login: campos con nombre accesible (F02 / accesibilidad)
 - **Tipo / nivel:** Accesibilidad / sistema. **Técnica:** inspección de nombre accesible y etiquetas. **Prioridad:** Media, sujeta a evaluación del impacto.
@@ -200,14 +208,14 @@ Se realizará una evaluación básica de accesibilidad y usabilidad siguiendo la
 
 | Flujo | Casos asociados | Total |
 |---|---|---:|
-| F01 Registro | CP-01, CP-02, CP-13, CP-14 | 4 |
+| F01 Registro | CP-01, CP-02, CP-13, CP-14, CP-15 | 5 |
 | F02 Inicio de sesión | CP-03, CP-04 | 2 |
 | F03 Consulta de cuentas | CP-05 | 1 |
 | F04 Transferencias | CP-06, CP-07, CP-08, CP-09 | 4 |
 | F05 Contacto | CP-10 | 1 |
 | F06 Recuperación de acceso | CP-11, CP-12 | 2 |
 | F02 / Accesibilidad | ACC-01 | 1 observación |
-| **Total** | **14 casos funcionales diseñados y 1 comprobación de accesibilidad** | **14 + 1** |
+| **Total** | **15 casos funcionales diseñados y 1 comprobación de accesibilidad** | **15 + 1** |
 
 ---
 
@@ -260,7 +268,7 @@ Se aplicarán las **cinco comprobaciones rápidas** de la sesión 6 a los flujos
 **Herramienta indicada por el curso:** Jira Free. **Estado:** falta verificar la existencia del proyecto y tickets, y adjuntar evidencia.
 
 1. Crear o identificar el proyecto Jira del QA de ParaBank.
-2. Registrar los casos **CP-01 a CP-14** como incidencias de tipo *Caso de prueba* (o tipo equivalente configurado), con pasos, esperado, prioridad y estado.
+2. Registrar los casos **CP-01 a CP-15** como incidencias de tipo *Caso de prueba* (o tipo equivalente configurado), con pasos, esperado, prioridad y estado.
 3. Abrir tickets de tipo *Defecto* **solo tras reproducir y sustentar** cada hallazgo.
 4. Enlazar cada defecto con su caso de prueba y registrar el resultado de ejecución.
 5. Adjuntar aquí **URL real del proyecto Jira: [por completar]**, más captura `evidencias/jira-casos.png` [pendiente].
@@ -280,7 +288,7 @@ Se utilizó IA como **apoyo de redacción y diseño** para organizar casos vincu
 ## Lista de verificación antes de entregar
 
 - [x] Documento de seis secciones con alcance y mapa F01–F06.
-- [x] Catorce casos funcionales diseñados; equivalencia y límites documentados.
+- [x] Quince casos funcionales diseñados; equivalencia, límites y combinación de errores documentados.
 - [ ] Ejecutar casos y completar resultados obtenidos y capturas.
 - [ ] Verificar reglas de negocio propuestas frente a interfaz y documentación disponible.
 - [ ] Sustentar y clasificar defectos reales, si los hay.

@@ -33,7 +33,7 @@ Evaluar flujos funcionales y aspectos básicos de accesibilidad mediante diseño
 
 ## 6. Estructura
 
-- `docs/`: plan, casos manuales, matriz, tabla de decisión, reporte, sesión exploratoria y mapa de flujos.
+- `docs/`: plan, casos manuales, matriz, tabla de decisión, borrador de reglas verificables, reporte, sesión exploratoria y mapa de flujos.
 - `tests/`: pruebas Playwright de ParaBank y archivos de ejemplo.
 - `evidencias/`: capturas y fichas de evidencia.
 - `playwright.config.js`, `package.json`: configuración y dependencias de Playwright.
@@ -46,7 +46,7 @@ Las notas exploratorias originales contienen cinco candidatos funcionales que a�
 
 ## 8. Pendientes
 
-- Ejecutar CP-01 a CP-14 y guardar fecha, resultado y evidencia.
+- Ejecutar CP-01 a CP-15 y guardar fecha, resultado y evidencia.
 - Reproducir OBS-01 a OBS-05 y confirmar las reglas esperadas antes de registrar defectos.
 - Contrastar las peticiones del mapa en DevTools y observar el envío de transferencia con cuentas de prueba.
 - Completar las revisiones de accesibilidad de teclado, lector de pantalla, contraste y texto alternativo.

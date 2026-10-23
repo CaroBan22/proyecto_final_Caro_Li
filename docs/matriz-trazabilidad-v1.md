@@ -11,7 +11,7 @@ Los requisitos R01–R07 son criterios de prueba propuestos/inferidos, no una es
 
 | ID | Requisito / criterio a validar | Flujo | Casos | Estado | Hallazgos vinculados | Hueco principal |
 |---|---|---|---|---|---|---|
-| R01 | Registro completo con contraseña confirmada; validar campos requeridos y usuario disponible. | F01 | CP-01, CP-02, CP-13, CP-14 | Por ejecutar | — | Criterios de campo vacío y usuario duplicado son propuestas a confirmar con la interfaz. |
+| R01 | Registro con datos personales completos, usuario disponible y contraseña confirmada; validar campos faltantes, duplicado y errores combinados. | F01 | CP-01, CP-02, CP-13, CP-14, CP-15 | Por ejecutar | — | Criterios y mensajes son propuestas pendientes de confirmar con la interfaz. |
 | R02 | Acceso válido y rechazo de credenciales incorrectas; los campos de acceso exponen nombres accesibles. | F02 | CP-03, CP-04; ACC-01 | CP-03/04 por ejecutar; ACC-01 observación técnica en Chromium | OBS-A11Y-01, pendiente de clasificación | Confirmar con lector de pantalla. |
 | R03 | Mostrar las cuentas asociadas al usuario autenticado. | F03 | CP-05 | Por ejecutar | — | No hay caso de acceso sin sesión. |
 | R04 | Transferir monto positivo entre cuentas distintas y reflejar resultado coherente. | F04 | CP-06 | Por ejecutar | O (S/1 confirmada) en notas; nueva ejecución pendiente | Capturar saldos y movimiento antes/después. |
@@ -22,14 +22,14 @@ Los requisitos R01–R07 son criterios de prueba propuestos/inferidos, no una es
 ## 2. Cobertura y estado
 
 - 7 de 7 requisitos tienen casos asociados (cobertura de diseño, no ejecución).
-- 14 casos funcionales CP-01 a CP-14 están diseñados; no hay resultados manuales registrados para ellos.
+- 15 casos funcionales CP-01 a CP-15 están diseñados; no hay resultados manuales registrados para ellos.
 - ACC-01 documenta la comprobación técnica de accesibilidad del login. Se observó falta de nombre programático en Chromium; la validación con lector de pantalla sigue pendiente.
 - OBS-01 a OBS-05 proceden de la imagen de notas exploratorias. Son candidatos por reproducir, no defectos confirmados.
 - No se acreditan tickets de Jira.
 
 ## 3. Huecos y acciones siguientes
 
-1. Ejecutar CP-01 a CP-14 y guardar fecha, navegador, resultado y evidencia individual.
+1. Ejecutar CP-01 a CP-15 y guardar fecha, navegador, resultado y evidencia individual.
 2. Reproducir OBS-01 a OBS-05; documentar saldos/movimientos y resultado exacto. Confirmar reglas de negocio antes de marcar FAIL.
 3. Revisar ACC-01 con lector de pantalla y documentar el resultado; completar teclado, contraste y texto alternativo.
 4. Registrar casos/defectos en Jira solo si el proyecto está disponible y enlazar los tickets reales.
