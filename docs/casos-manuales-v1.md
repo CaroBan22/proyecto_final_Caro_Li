@@ -73,7 +73,7 @@ Se realizará una evaluación básica de accesibilidad y usabilidad siguiendo la
 
 ## 2. Casos de prueba por flujo
 
-**Convenciones:** CP = caso de prueba; F = flujo crítico; CE = partición de equivalencia; VL = valor límite. La prioridad se refiere al impacto del flujo. Los casos funcionales CP-01 a CP-15 están por ejecutar. Las reglas no publicadas por ParaBank son criterios propuestos, no requisitos oficiales. La comprobación ACC-01 se observó en el DOM/árbol de accesibilidad con Chromium; falta revisión con lector de pantalla.
+**Convenciones:** CP = caso de prueba; F = flujo crítico; CE = partición de equivalencia; VL = valor límite. La prioridad se refiere al impacto del flujo. Los casos funcionales CP-01 a CP-20 están por ejecutar. Las reglas no publicadas por ParaBank son criterios del proyecto o aspectos por observar, no requisitos oficiales. La comprobación ACC-01 se observó en el DOM/árbol de accesibilidad con Chromium; falta revisión con lector de pantalla.
 
 ### CP-01 — Registro con datos válidos (F01)
 - **Tipo / nivel:** Funcional / sistema. **Técnica:** CE válida. **Prioridad:** Alta.
@@ -195,6 +195,46 @@ Se realizará una evaluación básica de accesibilidad y usabilidad siguiendo la
 - **Resultado esperado propuesto:** No se crea la cuenta y se informa tanto la discrepancia de contraseñas como la indisponibilidad del usuario. Si la interfaz valida en pasos, registrar el orden y dejar el caso pendiente de confirmar criterio.
 - **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-15-registro-errores-combinados.png` (por adjuntar).
 
+### CP-16 — Registro con valores de prueba en el campo SSN (F01)
+- **Tipo / nivel:** Funcional / sistema. **Técnica:** CE y exploración de dato de frontera observado. **Prioridad:** Alta.
+- **Precondición:** formulario de registro disponible; cada intento debe usar un username ficticio distinto. No usar datos personales reales.
+- **Datos:** Para cada intento, usar First Name `QA`, Last Name `Prueba`, Address `123 Main Street`, City `Beverly Hills`, State `CA`, Zip Code `90210`, Phone `5551234567`, Password y Confirm `Prueba2026!`. Variantes de SSN: `A`, `7` y `12345678`. Username: `qa_ssn_<variante>_<fecha-hora>`.
+- **Pasos:** 1) Abrir Register. 2) Completar los datos ficticios de una variante. 3) Enviar una sola vez. 4) Registrar si aparece una validación, un mensaje de creación o una pantalla posterior; copiar literalmente el texto. 5) Repetir desde un formulario limpio para las otras dos variantes con usernames nuevos. 6) Si el alta se completa, no repetir ese username.
+- **Resultado esperado:** Obtener un resultado independiente para cada variante: aceptada o rechazada, mensaje exacto y página final. Comparar con la observación reportada de aceptación de un carácter; todavía no se define un PASS/FAIL de formato. Probar ocho dígitos no valida identidad, no acredita que el campo sea un DNI y no implica consulta a RENIEC.
+- **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-16-ssn-variantes.png` (por adjuntar; una captura por variante, ocultando datos de prueba sensibles).
+
+### CP-17 — Comportamiento ante intentos de acceso fallidos repetidos (F02)
+- **Tipo / nivel:** Funcional / sistema. **Técnica:** exploratoria. **Prioridad:** Alta.
+- **Precondición:** cuenta ficticia dedicada al proyecto, autorizada y con contraseña conocida; confirmar antes que se puede iniciar sesión. No usar cuentas ajenas ni credenciales reales.
+- **Datos:** Username de esa cuenta y una contraseña deliberadamente incorrecta. Máximo tres envíos en una sesión.
+- **Pasos:** 1) Iniciar sesión correctamente una vez y cerrar sesión para confirmar el estado inicial. 2) Ingresar el username de prueba y la contraseña incorrecta; enviar. 3) Registrar el mensaje y el contador de intento. 4) Repetir hasta completar tres intentos como máximo. 5) Detener inmediatamente si aparece bloqueo, CAPTCHA, demora inusual o señal de protección. 6) Si no hubo protección, intentar una sola vez con la contraseña correcta para observar si el acceso se conserva.
+- **Resultado esperado:** Registrar la respuesta tras cada intento y el resultado de la comprobación final de acceso, o marcarla como no ejecutada si se activó una protección. El umbral y la política no están especificados, por eso el caso es exploratorio y no recibe PASS/FAIL de negocio hasta acordar un criterio.
+- **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-17-intentos-fallidos.png` (por adjuntar; ocultar username, contraseña y cualquier dato asociado a la cuenta).
+
+### CP-18 — Observación de identificadores generados (F01 / F03)
+- **Tipo / nivel:** Funcional / sistema. **Técnica:** observación y persistencia. **Prioridad:** Media.
+- **Precondición:** cliente ficticio registrado con CP-01 y sesión iniciada; poder abrir Accounts Overview y los detalles de una cuenta.
+- **Datos:** Customer ID y Account ID que la interfaz genere para el cliente de prueba.
+- **Pasos:** 1) Revisar la confirmación de registro y anotar si muestra Customer ID. 2) Abrir Accounts Overview y anotar si muestra Account ID. 3) Abrir los detalles de esa cuenta y comparar la asociación del Account ID. 4) Cerrar sesión e iniciar sesión nuevamente; repetir las consultas. 5) Registrar campo/pantalla, presencia, longitud y caracteres observados, ocultando los valores completos en evidencia compartida.
+- **Resultado esperado:** Dejar constancia por identificador de si se muestra, en qué pantalla, qué formato se observa y si permanece asociado a la misma cuenta tras volver a iniciar sesión. Si no aparece en la interfaz, registrar “no visible en las pantallas revisadas”; no inferir un defecto. No se establece longitud, alfabeto, orden ni método de generación porque no hay criterio documentado.
+- **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-18-identificadores.png` (por adjuntar; valores ocultos).
+
+### CP-19 — Referencias de transferencias en el historial (F04)
+- **Tipo / nivel:** Funcional / sistema. **Técnica:** observación de historial. **Prioridad:** Alta.
+- **Precondición:** sesión activa con dos cuentas de prueba distintas; saldo de origen suficiente para ambas transferencias; anotar saldos iniciales.
+- **Datos:** Dos transferencias en dólares, `1.00` y `2.00`, desde la misma cuenta de origen hacia la misma cuenta destino, siempre que los saldos lo permitan.
+- **Pasos:** 1) Abrir Transfer Funds. 2) Enviar la transferencia de `1.00` una sola vez. 3) Esperar la confirmación y revisar el historial de la cuenta correspondiente. 4) Anotar saldo final y referencia visible. 5) Repetir una sola vez con `2.00`. 6) Revisar nuevamente el resultado, el historial y los saldos. 7) Comparar las referencias de ambas operaciones y ocultar sus valores completos en evidencia compartida.
+- **Resultado esperado:** Registrar por operación si se confirma, si cambia el saldo según el monto, si aparece en el historial y si se muestra una referencia. Si una operación no se confirma, no reenviarla antes de comprobar historial y saldos. La unicidad global, aleatoriedad y secuencia de los IDs siguen sin especificación y no se califican en este caso.
+- **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-19-referencias-transferencias.png` (por adjuntar; capturas de confirmación, historial y saldos con IDs completos ocultos).
+
+### CP-20 — Respuesta individual a campos de registro vacíos (F01)
+- **Tipo / nivel:** Funcional / sistema. **Técnica:** exploración por campo, un dato omitido por intento. **Prioridad:** Alta.
+- **Precondición:** formulario de registro disponible.
+- **Datos:** Usar los datos ficticios de CP-16 excepto contraseñas, que deben coincidir (`Prueba2026!`). Ejecutar 11 variantes independientes: First Name, Last Name, Address, City, State, Zip Code, Phone, SSN, Username, Password y Confirm. Dejar vacío únicamente el campo evaluado y usar username nuevo en cada intento, salvo en la variante Username vacío. Para evaluar Password vacío, dejar también Confirm vacío porque ambos campos deben coincidir; registrar esta variante como una excepción de dos campos relacionados.
+- **Pasos:** 1) Abrir un formulario limpio de Register. 2) Completar los campos distintos al que se evalúa. 3) Dejar vacío solo ese campo y enviar una vez; para la variante Password vacío, dejar Confirm vacío también, como indica el dato de prueba. 4) Registrar si se completa el alta, el mensaje literal y si la interfaz identifica el campo. 5) Si el alta se completa, cerrar sesión y usar un username ficticio nuevo para la siguiente variante. 6) Repetir para las 11 variantes y consolidar los resultados en una tabla.
+- **Resultado esperado:** Obtener un resultado individual para cada campo: alta completada o validación, mensaje exacto y campo señalado. La obligatoriedad de cada campo se documenta según lo observado; no se presupone que todos sean obligatorios ni se asigna PASS/FAIL de negocio sin acordar ese criterio.
+- **Resultado obtenido / estado:** Por ejecutar. **Evidencia:** `evidencias/CP-20-campos-registro-vacios.png` (por adjuntar; tabla de 11 variantes y capturas representativas sin datos sensibles).
+
 ### ACC-01 — Login: campos con nombre accesible (F02 / accesibilidad)
 - **Tipo / nivel:** Accesibilidad / sistema. **Técnica:** inspección de nombre accesible y etiquetas. **Prioridad:** Media, sujeta a evaluación del impacto.
 - **Precondición:** formulario de inicio de sesión abierto en Chromium.
@@ -208,14 +248,16 @@ Se realizará una evaluación básica de accesibilidad y usabilidad siguiendo la
 
 | Flujo | Casos asociados | Total |
 |---|---|---:|
-| F01 Registro | CP-01, CP-02, CP-13, CP-14, CP-15 | 5 |
-| F02 Inicio de sesión | CP-03, CP-04 | 2 |
-| F03 Consulta de cuentas | CP-05 | 1 |
-| F04 Transferencias | CP-06, CP-07, CP-08, CP-09 | 4 |
+| F01 Registro | CP-01, CP-02, CP-13, CP-14, CP-15, CP-16, CP-18, CP-20 | 8 |
+| F02 Inicio de sesión | CP-03, CP-04, CP-17 | 3 |
+| F03 Consulta de cuentas | CP-05, CP-18 | 2 |
+| F04 Transferencias | CP-06, CP-07, CP-08, CP-09, CP-19 | 5 |
 | F05 Contacto | CP-10 | 1 |
 | F06 Recuperación de acceso | CP-11, CP-12 | 2 |
 | F02 / Accesibilidad | ACC-01 | 1 observación |
-| **Total** | **15 casos funcionales diseñados y 1 comprobación de accesibilidad** | **15 + 1** |
+| **Total** | **20 casos funcionales diseñados y 1 comprobación de accesibilidad** | **20 + 1** |
+
+**Nota:** CP-18 está asociado a F01 y F03; el total general cuenta cada caso una sola vez.
 
 ---
 
@@ -268,7 +310,7 @@ Se aplicarán las **cinco comprobaciones rápidas** de la sesión 6 a los flujos
 **Herramienta indicada por el curso:** Jira Free. **Estado:** falta verificar la existencia del proyecto y tickets, y adjuntar evidencia.
 
 1. Crear o identificar el proyecto Jira del QA de ParaBank.
-2. Registrar los casos **CP-01 a CP-15** como incidencias de tipo *Caso de prueba* (o tipo equivalente configurado), con pasos, esperado, prioridad y estado.
+2. Registrar los casos **CP-01 a CP-20** como incidencias de tipo *Caso de prueba* (o tipo equivalente configurado), con pasos, esperado, prioridad y estado.
 3. Abrir tickets de tipo *Defecto* **solo tras reproducir y sustentar** cada hallazgo.
 4. Enlazar cada defecto con su caso de prueba y registrar el resultado de ejecución.
 5. Adjuntar aquí **URL real del proyecto Jira: [por completar]**, más captura `evidencias/jira-casos.png` [pendiente].

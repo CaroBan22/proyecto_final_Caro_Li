@@ -46,7 +46,7 @@ Las notas exploratorias originales contienen cinco candidatos funcionales que a√
 
 ## 8. Pendientes
 
-- Ejecutar CP-01 a CP-15 y guardar fecha, resultado y evidencia.
+- Ejecutar CP-01 a CP-20 y guardar fecha, resultado y evidencia.
 - Reproducir OBS-01 a OBS-05 y confirmar las reglas esperadas antes de registrar defectos.
 - Contrastar las peticiones del mapa en DevTools y observar el env√≠o de transferencia con cuentas de prueba.
 - Completar las revisiones de accesibilidad de teclado, lector de pantalla, contraste y texto alternativo.
