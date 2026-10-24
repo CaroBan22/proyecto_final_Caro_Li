@@ -1,7 +1,7 @@
 # Reporte de defectos y hallazgos v1 — ParaBank
 
 **Curso:** QA Automatizador · **Sitio:** https://parabank.parasoft.com/parabank/
-**Actualizado:** 22/10/2026 · **Estado:** cinco candidatos transcritos de las notas exploratorias; cero defectos funcionales confirmados de forma independiente. Se registra además una observación técnica de accesibilidad pendiente de confirmación con lector de pantalla.
+**Actualizado:** 23/10/2026 · **Estado:** cinco candidatos transcritos de las notas exploratorias; cero defectos funcionales confirmados de forma independiente. Se registra además una observación técnica de accesibilidad pendiente de confirmación con lector de pantalla.
 
 > Las notas de la sesión y la inspección técnica son fuentes distintas. Un comportamiento anotado en la imagen no equivale a una reproducción actual. Las reglas esperadas para monto cero, sobregiro y transferencia a la misma cuenta siguen por confirmar.
 

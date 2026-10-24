@@ -2,7 +2,7 @@
 
 **Curso:** QA Automatizador — Tecsup
 **Proyecto:** ParaBank · https://parabank.parasoft.com/parabank/
-**Actualizado:** 22/10/2026 · **Estado:** diseño enlazado; ejecución manual funcional pendiente.
+**Actualizado:** 23/10/2026 · **Estado:** diseño enlazado; ejecución manual funcional pendiente.
 **Fuentes:** `docs/casos-manuales-v1.md`, `docs/sesion-exploratoria-1.md`, `docs/reporte-defectos-v1.md`.
 
 Los requisitos R01–R07 son criterios de prueba propuestos/inferidos, no una especificación oficial. El estado de un caso solo cambia tras registrar ejecución y evidencia.
@@ -23,6 +23,7 @@ Los requisitos R01–R07 son criterios de prueba propuestos/inferidos, no una es
 
 - 7 de 7 requisitos tienen casos asociados (cobertura de diseño, no ejecución).
 - 20 casos funcionales CP-01 a CP-20 están diseñados; no hay resultados manuales registrados para ellos.
+- La suite automatizada `tests/parabank-login.spec.js` reportó 15 aprobadas: 5 pruebas en cada uno de Chromium, Firefox y WebKit. Esta cobertura se limita a los controles de acceso y registro descritos en esa suite; no cambia el estado pendiente de los casos manuales.
 - ACC-01 documenta la comprobación técnica de accesibilidad del login. Se observó falta de nombre programático en Chromium; la validación con lector de pantalla sigue pendiente.
 - OBS-01 a OBS-05 proceden de la imagen de notas exploratorias. Son candidatos por reproducir, no defectos confirmados.
 - No se acreditan tickets de Jira.
