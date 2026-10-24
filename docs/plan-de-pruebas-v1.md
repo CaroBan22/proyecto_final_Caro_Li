@@ -3,13 +3,13 @@
 **Curso:** QA Automatizador — Tecsup
 **Proyecto:** Sistema de banca virtual ParaBank
 **Sistema bajo prueba (SUT):** https://parabank.parasoft.com/parabank/
-**Autor:** Por completar — estudiante responsable del repositorio
-**Versión:** 1.0 (borrador para revisión)
-**Fecha inicial:** 19 de octubre de 2026 · **Actualizado:** 22 de octubre de 2026
+**Autor:** Caro Li
+**Versión:** 1.0
+**Fecha inicial:** 19 de octubre de 2026 · **Actualizado:** 23 de octubre de 2026
 **Archivo de entrega:** `docs/plan-de-pruebas-v1.md`
-**Estado:** Plan v1 diseñado. Se agregó una observación de accesibilidad inspeccionada en Chromium y un mapa de red observado con Playwright; la ejecución funcional manual, contraste DevTools y cierre de defectos siguen pendientes.
+**Estado:** Plan v1 diseñado. La suite inicial de Playwright reportó 15 pruebas aprobadas (5 en cada uno de Chromium, Firefox y WebKit). Los 20 casos funcionales manuales siguen pendientes; también están pendientes el contraste DevTools y el cierre de los candidatos a defecto.
 
-> **Nota de alcance:** este plan se basa en los flujos F01–F06, los casos CP-01–CP-15 y la matriz R01–R07 de los documentos preparados para ParaBank. Las reglas inferidas de la interfaz o propuestas por QA no se presentan como requisitos oficiales. El plan no certifica ejecuciones que aún no tienen evidencia.
+> **Nota de alcance:** este plan se basa en los flujos F01–F06, los casos CP-01–CP-20 y la matriz R01–R07 de los documentos preparados para ParaBank. Las reglas inferidas de la interfaz o propuestas por QA no se presentan como requisitos oficiales. El plan no certifica ejecuciones que aún no tienen evidencia.
 
 ## 1. Identificación
 
@@ -17,8 +17,8 @@
 |---|---|
 | Proyecto | QA manual del sistema bancario de demostración ParaBank |
 | Sistema | ParaBank (Parasoft), sitio público de práctica |
-| Responsable QA | Por completar |
-| Versión del plan | v1 · 19/10/2026 |
+| Responsable QA | Caro Li |
+| Versión del plan | v1 · 23/10/2026 |
 | Repositorio | `https://github.com/CaroBan22/proyecto_final_Caro_Li` |
 | Archivo | `docs/plan-de-pruebas-v1.md` |
 | Módulo académico | Módulo 1: Testing manual y control de versiones |
@@ -56,10 +56,11 @@
 
 | Tipo / técnica | Aplicación al proyecto | Referencia / evidencia |
 |---|---|---|
-| Casos manuales funcionales | Ejecutar CP-01 a CP-15, comparar esperado y observado, anotar PASS/FAIL/BLOCKED y fecha | `docs/casos-manuales-v1.md` |
-| Partición de equivalencia y valores límite | Datos completos/incompletos, contraseñas coincidentes/diferentes, monto positivo/0 y saldo S frente a S + 0.01 (regla de sobregiro por confirmar) | Casos CP-01, CP-02, CP-06 a CP-09, CP-12 |
+| Casos manuales funcionales | Ejecutar CP-01 a CP-20, comparar esperado y observado, anotar PASS/FAIL/BLOCKED y fecha | `docs/casos-manuales-v1.md` |
+| Partición de equivalencia y valores límite | Datos completos/incompletos, contraseñas coincidentes/diferentes, variantes de SSN, campos vacíos, monto positivo/0 y saldo S frente a S + 0.01 (regla del proyecto) | Casos CP-01, CP-02, CP-06 a CP-09, CP-12, CP-16, CP-20 |
+| Pruebas exploratorias y observacionales | Intentos fallidos repetidos, identificadores generados y referencias de movimientos; registrar comportamiento sin atribuir políticas no especificadas | Casos CP-17 a CP-19 |
 | Tabla de decisión | Analizar registro F01 con tres condiciones: campos completos, contraseñas iguales, usuario disponible; 8 combinaciones y 5 casos derivados | `docs/tabla-decision-v1.md` |
-| Testing exploratorio | Sesión con charter y tiempo delimitado para encontrar comportamientos no previstos; anotar O (observación), D (posible defecto), P (pregunta), I (idea) | `docs/sesion-exploratoria-1.md` — por elaborar/ejecutar |
+| Testing exploratorio | Sesión con charter y tiempo delimitado para encontrar comportamientos no previstos; anotar O (observación), D (posible defecto), P (pregunta), I (idea) | `docs/sesion-exploratoria-1.md` — notas transcritas; completar fecha, balance y reproducción |
 | Accesibilidad y usabilidad | Revisión manual de navegación con teclado, formularios, mensajes de error y legibilidad; Lighthouse como apoyo, no como prueba definitiva | Capturas y notas en `evidencias/` — pendientes |
 | Gestión de defectos | Reproducir desde cero; incluir precondiciones, pasos, esperado fundamentado, obtenido, evidencia, severidad y prioridad; vincular R y CP | `docs/reporte-defectos-v1.md` y Jira — pendientes de evidencia |
 | Trazabilidad | Relacionar requisitos R01–R07 con CP y DEF, detectar huecos y actualizar estados tras las ejecuciones | `docs/matriz-trazabilidad-v1.md` |
@@ -71,7 +72,7 @@
 | Tipo | Criterio verificable | Situación a la fecha |
 |---|---|---|
 | Entrada | La URL de ParaBank responde y se pueden abrir los flujos seleccionados | Sitio y rutas de lectura respondieron durante observaciones en Chromium; volver a comprobar al ejecutar |
-| Entrada | Están definidos los flujos F01–F06 y los casos CP-01 a CP-15 | Documentados; ejecución manual pendiente |
+| Entrada | Están definidos los flujos F01–F06 y los casos CP-01 a CP-20 | Documentados; ejecución manual pendiente |
 | Entrada | Existen cuentas y datos ficticios de prueba; se anotan saldo inicial y navegador | Por completar |
 | Entrada | Se dispone de carpeta `evidencias/` y mecanismo de registro de resultados | Existe una captura ACC-01 y su ficha; faltan evidencias de casos y defectos |
 | Salida | Todos los casos de prioridad alta planificados se ejecutaron o tienen bloqueo justificado | Pendiente |
@@ -103,11 +104,11 @@
 | Actividad | Responsable | Momento / estado |
 |---|---|---|
 | Selección del proyecto, README y repositorio | Estudiante QA | Base creada; revisar versión publicada |
-| Diseño de casos manuales v1 | Estudiante QA | 15 casos funcionales diseñados; evidencias de ejecución pendientes |
+| Diseño de casos manuales v1 | Estudiante QA | 20 casos funcionales diseñados; evidencias de ejecución pendientes |
 | Tabla de decisión y matriz de trazabilidad | Estudiante QA | Borradores del 19/10/2026 preparados |
-| Sesión exploratoria 1 (charter, 25 min de exploración, notas y balance) | Estudiante QA | Notas fuente indican 20 min; fecha, balance y reproducción documentada pendientes |
-| Reproducción de al menos dos candidatos y registro de incidencias | Estudiante QA | Pendiente; OBS-01 a OBS-05 requieren repetición y reglas esperadas |
-| Reporte de cinco defectos realmente confirmados | Estudiante QA | Pendiente; no se presentan los candidatos como defectos confirmados |
+| Sesión exploratoria 1 (charter, exploración, notas y balance) | Estudiante QA | Notas fuente indican 20 min; fecha, balance y reproducción documentada pendientes |
+| Reproducción de los candidatos y registro de incidencias | Estudiante QA | Pendiente; OBS-01 a OBS-05 requieren repetición y reglas esperadas |
+| Clasificación de defectos confirmados | Estudiante QA | Pendiente; no se presentan los candidatos como defectos confirmados |
 | Revisión de un par, rama, pull request y merge | Estudiante QA y revisor por definir | **Por completar** |
 | Entrega del Módulo 1 | Estudiante QA | Fecha/hora definitiva del docente: **por confirmar** |
 
@@ -126,10 +127,10 @@ Las fechas no se inventan: la presentación modelo de Tecsup proporciona ejemplo
 
 ## 8. Entregables
 
-| Archivo o evidencia | Estado a 19/10/2026 |
+| Archivo o evidencia | Estado al 23/10/2026 |
 |---|---|
-| `README.md` y repositorio GitHub | README actualizado; publicar cambios pendientes mediante PR |
-| `docs/casos-manuales-v1.md` | 15 casos funcionales; completar ejecuciones, capturas y Jira |
+| `README.md` y repositorio GitHub | Rama `feature/playwright-parabank` sincronizada con su remoto; verificar PR de entrega |
+| `docs/casos-manuales-v1.md` | 20 casos funcionales; completar ejecuciones, capturas y Jira |
 | `docs/tabla-decision-v1.md` | Preparado (regla propuesta, 8 combinaciones, 4 derivados); validar reglas del sitio |
 | `docs/matriz-trazabilidad-v1.md` | Preparada (7 requisitos); actualizar estados y huecos tras ejecución |
 | `docs/sesion-exploratoria-1.md` | Notas O/D/P/I transcritas; faltan fecha y detalle reproducible |
@@ -137,7 +138,7 @@ Las fechas no se inventan: la presentación modelo de Tecsup proporciona ejemplo
 | `docs/mapa-flujos-criticos.md` | Rutas de lectura observadas en Chromium; falta captura en DevTools y observar envío real de transferencia |
 | `docs/plan-de-pruebas-v1.md` | Este plan v1, actualizado y listo para incluir en la rama de entrega |
 | `evidencias/` | Captura y ficha ACC-01; faltan capturas de casos, defectos, Jira y revisión complementaria |
-| Pull request hacia `main` | El mapa posterior al PR anterior y cambios actuales requieren un nuevo PR; aún no creado |
+| Pull request hacia `main` | Verificar en GitHub si la rama actual ya está incluida en un PR de entrega |
 
 ### Lista de verificación antes de presentar
 

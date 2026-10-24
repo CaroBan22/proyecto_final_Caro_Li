@@ -40,13 +40,13 @@ Evaluar flujos funcionales y aspectos básicos de accesibilidad mediante diseño
 
 ## 7. Estado de pruebas y hallazgos
 
-La suite inicial de Playwright se encuentra en `tests/parabank-login.spec.js` y cubre cinco comportamientos del acceso y registro. Una captura de terminal compartida por la autora mostró 5 pruebas aprobadas. Ese resultado corresponde a la ejecución mostrada y no acredita la ejecución manual de los casos.
+La suite inicial de Playwright se encuentra en `tests/parabank-login.spec.js` y cubre cinco comportamientos del acceso y registro. La ejecución reportada en Chromium, Firefox y WebKit dio 15 aprobadas (5 por navegador). Esto no acredita la ejecución manual de los 20 casos diseñados.
 
 Las notas exploratorias originales contienen cinco candidatos funcionales que aún requieren reproducción. Se registran en `docs/reporte-defectos-v1.md` sin presentarlos como defectos confirmados. ACC-01 registra una inspección técnica del nombre accesible de los campos de login; falta completar la revisión con lector de pantalla.
 
 ## 8. Pendientes
 
-- Ejecutar CP-01 a CP-15 y guardar fecha, resultado y evidencia.
+- Ejecutar CP-01 a CP-20 y guardar fecha, resultado y evidencia.
 - Reproducir OBS-01 a OBS-05 y confirmar las reglas esperadas antes de registrar defectos.
 - Contrastar las peticiones del mapa en DevTools y observar el envío de transferencia con cuentas de prueba.
 - Completar las revisiones de accesibilidad de teclado, lector de pantalla, contraste y texto alternativo.
