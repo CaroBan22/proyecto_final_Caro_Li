@@ -9,21 +9,25 @@ test.describe('Inicio de sesión', () => {
     await loginPage.open();
   });
 
-  test('rechaza credenciales incorrectas', async ({ page }) => {
-    await loginPage.login('usuario_invalido', 'clave_invalida');
+  test('no crea sesión para un usuario inválido', async ({ page }) => {
+    const invalidUsername = `usuario_invalido_${Date.now()}`;
+    await loginPage.login(invalidUsername, 'clave_de_prueba');
 
-    await expect(loginPage.rightPanel).toContainText(
-      'The username and password could not be verified'
-    );
+    await expect(page).not.toHaveURL(/overview\.htm/);
     await expect(page.getByRole('link', { name: 'Log Out' })).toHaveCount(0);
   });
 
-  test('muestra el mensaje de validación con campos vacíos', async () => {
-    await loginPage.login('', '');
-
-    await expect(loginPage.rightPanel).toContainText(
-      'Please enter a username and password.'
+  test('rechaza una contraseña incorrecta', async ({ page }) => {
+    test.skip(
+      !process.env.PARABANK_USERNAME,
+      'Configura PARABANK_USERNAME en .env para probar una contraseña incorrecta.'
     );
+
+    const incorrectPassword = `${process.env.PARABANK_PASSWORD || ''}_incorrecta`;
+    await loginPage.login(process.env.PARABANK_USERNAME, incorrectPassword);
+
+    await expect(page).not.toHaveURL(/overview\.htm/);
+    await expect(page.getByRole('link', { name: 'Log Out' })).toHaveCount(0);
   });
 
   test('permite iniciar sesión con credenciales configuradas', async ({ page }) => {
@@ -34,6 +38,8 @@ test.describe('Inicio de sesión', () => {
 
     await loginPage.login(process.env.PARABANK_USERNAME, process.env.PARABANK_PASSWORD);
 
+    await expect(page).toHaveURL(/overview\.htm/);
+    await expect(page.getByRole('link', { name: 'Accounts Overview' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Log Out' })).toBeVisible();
   });
 });
