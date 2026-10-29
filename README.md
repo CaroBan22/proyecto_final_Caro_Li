@@ -43,4 +43,18 @@ Durante las pruebas exploratorias se observaron los siguientes comportamientos:
 - Aparición de un mensaje de error interno.
 - Visualización de credenciales durante la recuperación de acceso.
 
-Estos hallazgos requieren analizar las reglas de negocio y document	
+Estos hallazgos requieren analizar las reglas de negocio y documentar su reproducción antes de confirmarlos como defectos.
+
+## 8. Automatización de acceso con Playwright
+- `pages/LoginPage.js`: Page Object del formulario de inicio de sesión.
+- `tests/auth/login.spec.js`: tres escenarios de autenticación.
+- `tests/parabank-login.spec.js`: comprobaciones del formulario y del acceso al registro.
+- `playwright.config.js`: URL base tomada de `BASE_URL`.
+
+### Configuración local
+1. Copiar `.env.example` como `.env`.
+2. Completar `BASE_URL`; para el escenario de acceso exitoso, configurar también `PARABANK_USERNAME` y `PARABANK_PASSWORD` con una cuenta de prueba.
+3. Instalar dependencias con `npm install`.
+4. Ejecutar la suite con `npm test` o solo autenticación con `npm run test:auth`.
+
+El archivo `.env` está excluido de Git. El escenario de acceso exitoso se omite cuando las credenciales de prueba no están configuradas.
