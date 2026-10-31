@@ -10,6 +10,11 @@ test.describe('Inicio de sesión', () => {
   });
 
   test('no crea sesión para un usuario inválido', async ({ page }) => {
+    test.fail(
+      true,
+      'OBS-LOGIN-01: ParaBank redirige a overview con un nombre de usuario aleatorio.'
+    );
+
     const invalidUsername = `usuario_invalido_${Date.now()}`;
     await loginPage.login(invalidUsername, 'clave_de_prueba');
 
