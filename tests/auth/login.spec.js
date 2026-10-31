@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.js';
+import { test, expect } from '../fixtures.js';
 
 test.describe('Autenticación', () => {
   test('no crea sesión para un usuario inválido', async ({ page, loginPage }) => {
