@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../../pages/LoginPage.js';
 
-test.describe('Inicio de sesión', () => {
+test.describe('Autenticación', () => {
   let loginPage;
 
   test.beforeEach(async ({ page }) => {
@@ -20,6 +20,9 @@ test.describe('Inicio de sesión', () => {
 
     await expect(page).not.toHaveURL(/overview\.htm/);
     await expect(page.getByRole('link', { name: 'Log Out' })).toHaveCount(0);
+    await expect(loginPage.errorMessage).toContainText(
+      /The username and password could not be verified/i
+    );
   });
 
   test('rechaza una contraseña incorrecta', async ({ page }) => {
@@ -33,6 +36,9 @@ test.describe('Inicio de sesión', () => {
 
     await expect(page).not.toHaveURL(/overview\.htm/);
     await expect(page.getByRole('link', { name: 'Log Out' })).toHaveCount(0);
+    await expect(loginPage.errorMessage).toContainText(
+      /The username and password could not be verified/i
+    );
   });
 
   test('permite iniciar sesión con credenciales configuradas', async ({ page }) => {

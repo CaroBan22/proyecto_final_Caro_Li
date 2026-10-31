@@ -4,7 +4,7 @@ export class LoginPage {
     this.usernameInput = page.locator('input[name="username"]');
     this.passwordInput = page.locator('input[name="password"]');
     this.loginButton = page.getByRole('button', { name: 'Log In' });
-    this.rightPanel = page.locator('#rightPanel');
+    this.errorMessage = page.locator('#rightPanel .error');
   }
 
   async open() {
