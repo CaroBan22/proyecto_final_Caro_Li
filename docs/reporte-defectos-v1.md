@@ -1,7 +1,7 @@
 # Reporte de defectos y hallazgos v1 — ParaBank
 
 **Curso:** QA Automatizador · **Sitio:** https://parabank.parasoft.com/parabank/
-**Actualizado:** 22/10/2026 · **Estado:** cinco candidatos transcritos de las notas exploratorias; cero defectos funcionales confirmados de forma independiente. Se registra además una observación técnica de accesibilidad pendiente de confirmación con lector de pantalla.
+**Actualizado:** 30/10/2026 · **Estado:** cinco candidatos transcritos de las notas exploratorias; un comportamiento de login observado en CI y pendiente de reproducción aislada; cero defectos funcionales con ficha completa. Se registra además una observación técnica de accesibilidad pendiente de confirmación con lector de pantalla.
 
 > Las notas de la sesión y la inspección técnica son fuentes distintas. Un comportamiento anotado en la imagen no equivale a una reproducción actual. Las reglas esperadas para monto cero, sobregiro y transferencia a la misma cuenta siguen por confirmar.
 
@@ -14,9 +14,10 @@
 | OBS-03 | La nota indica que se aceptaron montos mayores al saldo disponible. | R05 / CP-08 | Transcrito; falta saldo inicial/final y política de sobregiro. |
 | OBS-04 | La nota indica que se aceptó una transferencia positiva a la misma cuenta. | R05 / CP-09 | Transcrito; reproducir y revisar movimiento/saldos y regla de negocio. |
 | OBS-05 | La nota indica que no se logró recuperar la cuenta con *Forgot Login Info*. | R07 / CP-11 | Transcrito; probar datos ficticios verificados y guardar mensaje exacto. |
+| OBS-LOGIN-01 | La prueba automatizada con un nombre de usuario aleatorio llegó a `overview.htm` en Chromium, Firefox y WebKit. | RB-05 / `tests/auth/login.spec.js` | Observado en CI el 30/10/2026; reproducir en una ejecución aislada y completar la ficha antes de clasificarlo como defecto confirmado. La prueba queda marcada como fallo esperado mientras se investiga. |
 | OBS-A11Y-01 | Los campos Username y Password no exponen nombre accesible en la inspección DOM/árbol de accesibilidad de Chromium. | R02 / ACC-01 | Observación técnica reproducida; falta validar con lector de pantalla y clasificar impacto antes de confirmar defecto. |
 
-**Conteo:** 5 candidatos de la imagen sin reproducción actual; 1 observación técnica de accesibilidad con inspección DOM; 0 defectos confirmados con ficha completa. No se debe presentar este conteo como cinco defectos verificados.
+**Conteo:** 5 candidatos de la imagen aún sin reproducción actual; 1 comportamiento de login observado en CI y pendiente de reproducción aislada; 1 observación técnica de accesibilidad con inspección DOM; 0 defectos funcionales con ficha completa. No se debe presentar los candidatos como defectos confirmados.
 
 ## 2. Ficha de seguimiento para OBS-01 a OBS-05
 

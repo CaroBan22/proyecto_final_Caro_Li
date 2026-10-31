@@ -3,6 +3,9 @@ parabank-login.spec.js
 
 # Playwright
 node_modules/
+.env
+.env.*
+!.env.example
 /test-results/
 /playwright-report/
 /blob-report/

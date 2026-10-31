@@ -38,6 +38,8 @@ Evaluar flujos funcionales y aspectos básicos de accesibilidad mediante diseño
 - `evidencias/`: capturas y fichas de evidencia.
 - `playwright.config.js`, `package.json`: configuración y dependencias de Playwright.
 
+Estos hallazgos requieren analizar las reglas de negocio y documentar su reproducción antes de confirmarlos como defectos.
+
 ## 7. Estado de pruebas y hallazgos
 
 La suite inicial de Playwright se encuentra en `tests/parabank-login.spec.js` y cubre cinco comportamientos del acceso y registro. Una captura de terminal compartida por la autora mostró 5 pruebas aprobadas. Ese resultado corresponde a la ejecución mostrada y no acredita la ejecución manual de los casos.
@@ -52,3 +54,20 @@ Las notas exploratorias originales contienen cinco candidatos funcionales que a�
 - Completar las revisiones de accesibilidad de teclado, lector de pantalla, contraste y texto alternativo.
 - Registrar casos y defectos en Jira si el espacio del curso está disponible.
 - Integrar los cambios pendientes mediante una rama y pull request hacia `main`.
+
+## 9. Automatización de acceso con Playwright
+
+- `pages/LoginPage.js`: Page Object del formulario de inicio de sesión.
+- `tests/fixtures.js`: prepara `loginPage` y entrega las credenciales desde variables de entorno.
+- `tests/auth/login.spec.js`: tres escenarios de autenticación.
+- `tests/parabank-login.spec.js`: comprobaciones del formulario y del acceso al registro.
+- `playwright.config.js`: URL base tomada de `BASE_URL`.
+
+### Configuración local
+
+1. Copiar `.env.example` como `.env`.
+2. Completar `BASE_URL`; para el escenario de acceso exitoso, configurar también `PARABANK_USERNAME` y `PARABANK_PASSWORD` con una cuenta de prueba.
+3. Instalar dependencias con `npm install`.
+4. Ejecutar la suite con `npm test` o solo autenticación con `npm run test:auth`.
+
+El archivo `.env` está excluido de Git. El escenario de acceso exitoso se omite cuando las credenciales de prueba no están configuradas.
