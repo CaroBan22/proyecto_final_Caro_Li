@@ -58,6 +58,7 @@ Las notas exploratorias originales contienen cinco candidatos funcionales que a�
 ## 9. Automatización de acceso con Playwright
 
 - `pages/LoginPage.js`: Page Object del formulario de inicio de sesión.
+- `tests/fixture.js`: prepara `loginPage` y entrega las credenciales desde variables de entorno.
 - `tests/auth/login.spec.js`: tres escenarios de autenticación.
 - `tests/parabank-login.spec.js`: comprobaciones del formulario y del acceso al registro.
 - `playwright.config.js`: URL base tomada de `BASE_URL`.

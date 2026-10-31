@@ -1,15 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../pages/LoginPage.js';
+import { test, expect } from '../fixture.js';
 
 test.describe('Autenticación', () => {
-  let loginPage;
-
-  test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    await loginPage.open();
-  });
-
-  test('no crea sesión para un usuario inválido', async ({ page }) => {
+  test('no crea sesión para un usuario inválido', async ({ page, loginPage }) => {
     test.fail(
       true,
       'OBS-LOGIN-01: ParaBank redirige a overview con un nombre de usuario aleatorio.'
@@ -25,14 +17,18 @@ test.describe('Autenticación', () => {
     );
   });
 
-  test('rechaza una contraseña incorrecta', async ({ page }) => {
+  test('rechaza una contraseña incorrecta', async ({
+    page,
+    loginPage,
+    parabankCredentials,
+  }) => {
     test.skip(
-      !process.env.PARABANK_USERNAME,
+      !parabankCredentials.username,
       'Configura PARABANK_USERNAME en .env para probar una contraseña incorrecta.'
     );
 
-    const incorrectPassword = `${process.env.PARABANK_PASSWORD || ''}_incorrecta`;
-    await loginPage.login(process.env.PARABANK_USERNAME, incorrectPassword);
+    const incorrectPassword = `${parabankCredentials.password || ''}_incorrecta`;
+    await loginPage.login(parabankCredentials.username, incorrectPassword);
 
     await expect(page).not.toHaveURL(/overview\.htm/);
     await expect(page.getByRole('link', { name: 'Log Out' })).toHaveCount(0);
@@ -41,13 +37,17 @@ test.describe('Autenticación', () => {
     );
   });
 
-  test('permite iniciar sesión con credenciales configuradas', async ({ page }) => {
+  test('permite iniciar sesión con credenciales configuradas', async ({
+    page,
+    loginPage,
+    parabankCredentials,
+  }) => {
     test.skip(
-      !process.env.PARABANK_USERNAME || !process.env.PARABANK_PASSWORD,
+      !parabankCredentials.username || !parabankCredentials.password,
       'Configura PARABANK_USERNAME y PARABANK_PASSWORD en .env para ejecutar este caso.'
     );
 
-    await loginPage.login(process.env.PARABANK_USERNAME, process.env.PARABANK_PASSWORD);
+    await loginPage.login(parabankCredentials.username, parabankCredentials.password);
 
     await expect(page).toHaveURL(/overview\.htm/);
     await expect(page.getByRole('link', { name: 'Accounts Overview' })).toBeVisible();
