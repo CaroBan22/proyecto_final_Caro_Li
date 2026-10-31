@@ -7,7 +7,7 @@ export class LoginPage {
     this.errorMessage = page.locator('#rightPanel .error');
   }
 
-  async open() {
+  async goto() {
     await this.page.goto('/');
   }
 
