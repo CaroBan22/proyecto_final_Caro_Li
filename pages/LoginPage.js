@@ -5,6 +5,7 @@ export class LoginPage {
     this.passwordInput = page.locator('input[name="password"]');
     this.loginButton = page.getByRole('button', { name: 'Log In' });
     this.errorMessage = page.locator('#rightPanel .error');
+    this.successMessage = page.getByRole('heading', { name: 'Accounts Overview' });
   }
 
   async goto() {

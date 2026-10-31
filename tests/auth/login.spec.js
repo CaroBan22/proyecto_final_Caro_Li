@@ -55,6 +55,7 @@ test.describe('Autenticación', () => {
     await loginPage.login(credentials.username, credentials.password);
 
     await expect(page).toHaveURL(/overview\.htm/);
+    await expect(loginPage.successMessage).toBeVisible();
     await expect(page.getByRole('link', { name: 'Accounts Overview' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Log Out' })).toBeVisible();
   });
