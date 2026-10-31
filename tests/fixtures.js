@@ -8,7 +8,7 @@ export const test = base.extend({
     await use(loginPage);
   },
 
-  parabankCredentials: async ({}, use) => {
+  credentials: async ({}, use) => {
     await use({
       username: process.env.PARABANK_USERNAME,
       password: process.env.PARABANK_PASSWORD,
