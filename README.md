@@ -2,53 +2,71 @@
 
 ## 1. Descripción
 
-Proyecto académico de aseguramiento de calidad para el curso QA Automatizador de Tecsup. El sistema bajo prueba es ParaBank, aplicación bancaria de demostración de Parasoft.
+Proyecto académico de aseguramiento de calidad para el curso QA Automatizador de Tecsup. El sistema bajo prueba es ParaBank, una aplicación bancaria de demostración desarrollada por Parasoft. El repositorio centraliza la documentación de pruebas, la evidencia generada y la automatización inicial con Playwright.
 
 ## 2. Objetivo
 
-Evaluar flujos funcionales y aspectos básicos de accesibilidad mediante diseño de casos manuales, exploración y automatización inicial con Playwright.
+Evaluar flujos funcionales clave de la aplicación, documentar el alcance de las pruebas y automatizar una base inicial para validaciones de acceso, registro y navegación crítica.
 
 ## 3. Sistema bajo prueba
 
-- **URL:** https://parabank.parasoft.com/parabank/
-- **Tipo:** aplicación web bancaria de demostración.
-- **Estado:** en desarrollo; la cobertura manual y validación de hallazgos siguen pendientes.
+- URL: https://parabank.parasoft.com/parabank/
+- Tipo: aplicación web bancaria de demostración
+- Estado: proyecto activo en etapa de documentación y automatización inicial
 
-## 4. Funcionalidades diseñadas
+## 4. Alcance del proyecto
 
-- Registro de clientes.
-- Inicio de sesión.
-- Recuperación de credenciales.
-- Consulta de cuentas y saldos.
-- Transferencias.
-- Actualización de información personal.
-- Revisión básica de accesibilidad.
+Las pruebas y documentación del proyecto contemplan los siguientes escenarios:
+
+- Registro de clientes
+- Inicio de sesión
+- Recuperación de credenciales
+- Consulta de cuentas y saldos
+- Transferencias
+- Actualización de información personal
+- Validación básica de accesibilidad
+- Exploración de flujos críticos y análisis de riesgos
 
 ## 5. Herramientas
 
-- Git y GitHub para control de versiones.
-- Playwright para comprobaciones automatizadas iniciales.
-- Chromium y DevTools para observar la aplicación y sus peticiones.
-- Jira para gestión de casos y defectos, si se confirma el espacio del curso.
+- Git y GitHub para control de versiones y colaboración
+- Playwright para automatización de pruebas web
+- Chromium y DevTools para inspección del comportamiento de la aplicación
+- Jira para posible gestión de casos y defectos, según disponibilidad del espacio del curso
+- GitHub Actions para automatización de validaciones CI
 
-## 6. Estructura
+## 6. Estructura del repositorio
 
-- `docs/`: plan, casos manuales, matriz, tabla de decisión, reglas del proyecto, reporte, sesión exploratoria y mapa de flujos.
-- `tests/`: pruebas Playwright de ParaBank y archivos de ejemplo.
-- `evidencias/`: capturas y fichas de evidencia.
-- `playwright.config.js`, `package.json`: configuración y dependencias de Playwright.
+- `.github/workflows/node.js.yml`: flujo de CI para ejecución de pruebas con Node.js
+- `docs/`: documentos del plan de pruebas, casos manuales, trazabilidad, reglas de negocio, sesiones exploratorias, mapa de flujos y reporte de hallazgos
+- `tests/`: pruebas automatizadas con Playwright y archivos de ejemplo
+- `evidencias/`: capturas y evidencias de pruebas
+- `playwright.config.js`: configuración de Playwright
+- `package.json`: dependencias y metadata del proyecto
+- `README.md`: resumen general del proyecto
 
-## 7. Estado de pruebas y hallazgos
+## 7. Estado actual
 
-La suite inicial de Playwright se encuentra en `tests/parabank-login.spec.js` y cubre cinco comportamientos del acceso y registro. Una captura de terminal compartida por la autora mostró 5 pruebas aprobadas. Ese resultado corresponde a la ejecución mostrada y no acredita la ejecución manual de los casos.
+El repositorio incluye una base de documentación y automatización inicial para QA. Actualmente se encuentran disponibles:
 
-Las notas exploratorias originales contienen cinco candidatos funcionales que aún requieren reproducción. Se registran en `docs/reporte-defectos-v1.md` sin presentarlos como defectos confirmados. ACC-01 registra una inspección técnica del nombre accesible de los campos de login; falta completar la revisión con lector de pantalla.
+- plan de pruebas y trazabilidad en `docs/`
+- pruebas de Playwright en `tests/parabank-login.spec.js`
+- archivos de ejemplo y pruebas adicionales de referencia en `tests/`
+- evidencia visual en `evidencias/`
+- configuración de integración continua en `.github/workflows/node.js.yml`
+
+La suite inicial se enfoca en validaciones de acceso y registro, con la intención de ampliar la cobertura hacia más flujos funcionales y escenarios de accesibilidad.
 
 ## 8. Pendientes
 
-- Ejecutar CP-01 a CP-15 y guardar fecha, resultado y evidencia.
-- Reproducir OBS-01 a OBS-05 y confirmar las reglas esperadas antes de registrar defectos.
-- Contrastar las peticiones del mapa en DevTools y observar el envío de transferencia con cuentas de prueba.
-- Completar las revisiones de accesibilidad de teclado, lector de pantalla, contraste y texto alternativo.
-- Registrar casos y defectos en Jira si el espacio del curso está disponible.
-- Integrar los cambios pendientes mediante una rama y pull request hacia `main`.
+- Ejecutar y documentar la totalidad de los casos de prueba planificados
+- Revisar y confirmar los hallazgos exploratorios antes de registrar defectos definitivos
+- Completar la validación de transferencias con cuentas de prueba
+- Ampliar la cobertura de accesibilidad (teclado, lector de pantalla, contraste y texto alternativo)
+- Mantener actualizada la documentación del proyecto conforme avancen los cambios
+- Continuar con la evolución de la automatización en Playwright
+- Integrar cambios mediante ramas y pull requests hacia `main`
+
+## 9. Nota
+
+Este repositorio refleja un proyecto académico de calidad de software en evolución. La documentación y la automatización están en construcción, con foco en definir una base sólida para pruebas funcionales y de accesibilidad de la aplicación ParaBank.
