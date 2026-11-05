@@ -31,6 +31,10 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run ParaBank tests
+        env:
+          BASE_URL: https://parabank.parasoft.com/parabank/
+          PARABANK_USERNAME: ${{ secrets.PARABANK_USERNAME }}
+          PARABANK_PASSWORD: ${{ secrets.PARABANK_PASSWORD }}
         run: npm test
 
       - name: Upload Playwright report
