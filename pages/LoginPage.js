@@ -9,7 +9,7 @@ export class LoginPage {
   }
 
   async goto() {
-    await this.page.goto('/');
+  await this.page.goto('./index.htm');
   }
 
   async login(username, password) {
