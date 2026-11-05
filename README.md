@@ -34,7 +34,7 @@ Evaluar flujos funcionales y aspectos básicos de accesibilidad mediante diseño
 ## 6. Estructura
 
 - `docs/`: plan, casos manuales, matriz, tabla de decisión, reglas del proyecto, reporte, sesión exploratoria y mapa de flujos.
-- `tests/`: pruebas Playwright de ParaBank y archivos de ejemplo.
+- `tests/`: pruebas Playwright de ParaBank; `example.spec.js` y `locators.spec.js` son ejemplos excluidos de la suite principal.
 - `evidencias/`: capturas y fichas de evidencia.
 - `playwright.config.js`, `package.json`: configuración y dependencias de Playwright.
 
@@ -58,7 +58,7 @@ Las notas exploratorias originales contienen cinco candidatos funcionales que a�
 ## 9. Automatización de acceso con Playwright
 
 - `pages/LoginPage.js`: Page Object del formulario de inicio de sesión.
-- `tests/fixtures.js`: prepara `loginPage` y entrega las credenciales desde variables de entorno.
+- `tests/auth/fixture.js`: prepara `loginPage` y entrega las credenciales desde variables de entorno.
 - `tests/auth/login.spec.js`: tres escenarios de autenticación.
 - `tests/parabank-login.spec.js`: comprobaciones del formulario y del acceso al registro.
 - `playwright.config.js`: URL base tomada de `BASE_URL`.
@@ -67,7 +67,9 @@ Las notas exploratorias originales contienen cinco candidatos funcionales que a�
 
 1. Copiar `.env.example` como `.env`.
 2. Completar `BASE_URL`; para el escenario de acceso exitoso, configurar también `PARABANK_USERNAME` y `PARABANK_PASSWORD` con una cuenta de prueba.
-3. Instalar dependencias con `npm install`.
+3. Instalar dependencias con `npm ci`.
 4. Ejecutar la suite con `npm test` o solo autenticación con `npm run test:auth`.
+
+También están disponibles `npm run test:headed`, `npm run test:ui` y `npm run report` para ejecutar con navegador visible, abrir la interfaz de Playwright y consultar el reporte HTML.
 
 El archivo `.env` está excluido de Git. El escenario de acceso exitoso se omite cuando las credenciales de prueba no están configuradas.

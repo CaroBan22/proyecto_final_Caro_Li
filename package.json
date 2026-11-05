@@ -9,7 +9,10 @@
   },
   "scripts": {
     "test": "playwright test",
-    "test:auth": "playwright test tests/auth/login.spec.js"
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:auth": "playwright test tests/auth/login.spec.js",
+    "report": "playwright show-report"
   },
   "repository": {
     "type": "git",

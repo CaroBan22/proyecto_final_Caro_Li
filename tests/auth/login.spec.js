@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures.js';
+import { test, expect } from './fixture.js';
 
 test.describe('Autenticación', () => {
   test('no crea sesión para un usuario inválido', async ({
@@ -6,11 +6,7 @@ test.describe('Autenticación', () => {
     loginPage,
     credentials,
   }) => {
-    test.fail(
-      true,
-      'OBS-LOGIN-01: ParaBank redirige a overview con un nombre de usuario aleatorio.'
-    );
-
+  
     const invalidUsername = `usuario_invalido_${Date.now()}`;
     const password = credentials.password || 'clave_de_prueba';
     await loginPage.login(invalidUsername, password);
