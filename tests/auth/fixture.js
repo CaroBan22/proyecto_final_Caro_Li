@@ -14,6 +14,20 @@ export const test = base.extend({
       password: process.env.PARABANK_PASSWORD,
     });
   },
+
+  loggedInPage: async ({ page, loginPage, credentials }, use) => {
+    if (!credentials.username || !credentials.password) {
+      throw new Error(
+        'Configura PARABANK_USERNAME y PARABANK_PASSWORD en .env.'
+      );
+    }
+
+    await loginPage.login(credentials.username, credentials.password);
+    await expect(page).toHaveURL(/overview\.htm/);
+    await expect(loginPage.successMessage).toBeVisible();
+
+    await use(page);
+  },
 });
 
 export { expect };
