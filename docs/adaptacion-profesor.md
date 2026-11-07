@@ -33,4 +33,4 @@ No acredita CP manuales ejecutados ni defectos funcionales confirmados. El alta 
 
 ## Validación de esta entrega
 
-Playwright descubrió 45 combinaciones (15 casos por navegador). Se ejecutaron 4 casos en Chromium del sistema contra ParaBank: los tres de campos vacíos y el registro vacío; los cuatro aprobaron. Los casos autenticados nuevos y la transferencia no se ejecutaron: este entorno no tiene credenciales configuradas.
+Playwright descubrió 45 combinaciones (15 casos por navegador). Se ejecutaron 4 casos en Chromium del sistema contra ParaBank: los tres de campos vacíos y el registro vacío; los cuatro aprobaron. Después de configurar la cuenta de prueba, aprobaron en Chromium los dos casos de cuentas: consulta y detalles, y reutilización de sesión guardada (2 aprobados). La transferencia real sigue sin ejecutarse. Se habilita CI para PR dirigidos a refactor-pom para verificar la adaptación en los tres navegadores.
