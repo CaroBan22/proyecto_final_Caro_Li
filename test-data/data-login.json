@@ -1,0 +1,23 @@
+[
+  {
+    "id": "AUTH-NEG-01",
+    "name": "usuario vacío",
+    "username": "",
+    "password": "clave_de_prueba",
+    "error": "Please enter a username and password."
+  },
+  {
+    "id": "AUTH-NEG-02",
+    "name": "contraseña vacía",
+    "username": "usuario_de_prueba",
+    "password": "",
+    "error": "Please enter a username and password."
+  },
+  {
+    "id": "AUTH-NEG-03",
+    "name": "ambos campos vacíos",
+    "username": "",
+    "password": "",
+    "error": "Please enter a username and password."
+  }
+]
