@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures.js';
 import { OpenAccountPage } from '../../pages/OpenAccountPage.js';
 import { TransferPage } from '../../pages/TransferPage.js';
+import { LoginPage } from '../../pages/LoginPage.js';
 
 function cents(text) {
   const value = Number(text.replace(/[$,\s]/g, ''));
@@ -23,7 +24,7 @@ test.describe('Apertura y transferencia con saldo', () => {
   test.describe.configure({ retries: 0 });
   test.skip(process.env.RUN_OPEN_ACCOUNT_FLOW !== 'true', 'Activar solo para la ejecución dedicada de apertura y transferencia.');
 
-  test('BANK-E2E: abre una cuenta y transfiere USD 1 con conciliación', async ({ loggedInPage: page }, testInfo) => {
+  test('BANK-E2E: abre una cuenta y transfiere USD 1 con conciliación', async ({ loggedInPage: page, credentials }, testInfo) => {
     test.setTimeout(90000);
     const from = process.env.PARABANK_FROM_ACCOUNT;
     if (!from) throw new Error('Configura PARABANK_FROM_ACCOUNT con una cuenta del usuario actual.');
@@ -54,6 +55,19 @@ test.describe('Apertura y transferencia con saldo', () => {
     await expect(transfer.resultTo).toHaveText(to);
     await expect.poll(() => balance(page, from)).toBe(initial - deposit - 100);
     await expect.poll(() => balance(page, to)).toBe(deposit + 100);
+    await test.step('Cerrar sesión y volver a entrar para comprobar persistencia', async () => {
+      await page.getByRole('link', { name: 'Log Out', exact: true }).click();
+      const login = new LoginPage(page);
+      await expect(page.getByRole('heading', { name: 'Customer Login', exact: true })).toBeVisible();
+      await expect(login.usernameInput).toBeVisible();
+      await expect(login.passwordInput).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Log Out', exact: true })).toHaveCount(0);
+      await login.login(credentials.username, credentials.password);
+      await expect(page).toHaveURL(/overview\.htm/);
+      await expect(login.successMessage).toBeVisible();
+      await expect.poll(() => balance(page, from)).toBe(initial - deposit - 100);
+      await expect.poll(() => balance(page, to)).toBe(deposit + 100);
+    });
     await testInfo.attach('conciliacion', {
       body: JSON.stringify({ from, to, initialCents: initial, openingDepositCents: deposit, transferCents: 100, finalFromCents: initial - deposit - 100, finalToCents: deposit + 100 }, null, 2),
       contentType: 'application/json',
