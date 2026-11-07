@@ -244,3 +244,7 @@ Las pruebas autenticadas requieren una cuenta válida en ParaBank. Una ejecució
 ## 14. Nota
 
 Este repositorio refleja un proyecto académico en evolución. La documentación distingue el diseño de pruebas, los resultados de ejecución y los hallazgos pendientes de confirmación.
+
+## Adaptación de la estructura del curso
+
+Consultar [la correspondencia y los comandos](docs/adaptacion-profesor.md). Se centralizaron fixtures y se agregaron páginas de registro, cuentas, detalles y transferencia, además de reutilización de sesión en memoria. Las pruebas nuevas requieren validación contra ParaBank; no se consideran aprobadas por estar implementadas.

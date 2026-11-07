@@ -17,7 +17,8 @@ dotenv.config();
  */
 export default defineConfig({
   testDir: './tests',
-  testMatch: ['**/parabank-*.spec.js', '**/auth/*.spec.js'],
+  testMatch: ['**/parabank-*.spec.js', '**/auth/*.spec.js', '**/registration/*.spec.js', '**/accounts/*.spec.js', '**/transfers/*.spec.js'],
+  // Las transferencias no se reintentan: un envío podría haberse procesado.
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

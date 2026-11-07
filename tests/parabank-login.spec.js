@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Formulario de acceso y registro', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./index.htm');
   });
 
   test('muestra los campos de usuario y contraseña y el botón de inicio de sesión', async ({ page }) => {
