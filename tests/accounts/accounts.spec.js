@@ -10,10 +10,7 @@ test('CP-05: consulta una cuenta y sus detalles', async ({ accountsPage, account
   await expect(accountDetailsPage.balance).toContainText('$');
 });
 
-const withSession = test.extend({
-  storageState: async ({ bankStorageState }, use) => { await use(bankStorageState); },
-});
-withSession('CUENTAS-02: consulta con sesión guardada, sin repetir login', async ({ page }) => {
+test('CUENTAS-02: consulta con sesión guardada, sin repetir login', async ({ savedSessionPage: page }) => {
   await page.goto('./overview.htm');
   await expect(page.getByRole('heading', { name: 'Accounts Overview', exact: true })).toBeVisible();
   await expect(page.locator('#accountTable tbody a').first()).toBeVisible();

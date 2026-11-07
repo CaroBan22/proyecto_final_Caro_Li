@@ -36,6 +36,12 @@ export const test = base.extend({
     await transferPage.goto();
     await use(transferPage);
   },
+  savedSessionPage: async ({ browser, bankStorageState, baseURL }, use) => {
+    // Contexto explícito: el estado guardado nunca se aplica a las pruebas anónimas.
+    const context = await browser.newContext({ baseURL, storageState: bankStorageState });
+    try { await use(await context.newPage()); }
+    finally { await context.close(); }
+  },
   bankStorageState: [async ({ browser }, use) => {
     if (!process.env.PARABANK_USERNAME || !process.env.PARABANK_PASSWORD) {
       throw new Error('Configura PARABANK_USERNAME y PARABANK_PASSWORD.');

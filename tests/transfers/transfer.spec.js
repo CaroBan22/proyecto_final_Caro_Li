@@ -9,8 +9,9 @@ test('TRANSFER-01: formulario disponible para el cliente autenticado', async ({ 
   await expect(transferPage.submitButton).toBeVisible();
 });
 
+test.describe('Transferencias con movimiento de saldo', () => {
+  test.skip(process.env.RUN_BANK_MUTATIONS !== 'true', 'Activar solo con cuentas dedicadas.');
 test('CP-06: transfiere entre dos cuentas de prueba configuradas', async ({ transferPage }) => {
-  test.skip(process.env.RUN_BANK_MUTATIONS !== 'true', 'Activar RUN_BANK_MUTATIONS solo con cuentas de prueba dedicadas.');
   const from = process.env.PARABANK_FROM_ACCOUNT;
   const to = process.env.PARABANK_TO_ACCOUNT;
   if (!from || !to || from === to) throw new Error('Configura dos cuentas de prueba distintas.');
@@ -21,4 +22,6 @@ test('CP-06: transfiere entre dos cuentas de prueba configuradas', async ({ tran
   await expect(transferPage.resultAmount).toHaveText('$1.00');
   await expect(transferPage.resultFrom).toHaveText(from);
   await expect(transferPage.resultTo).toHaveText(to);
+});
+
 });

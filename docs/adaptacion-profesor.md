@@ -34,3 +34,13 @@ No acredita CP manuales ejecutados ni defectos funcionales confirmados. El alta 
 ## Validación de esta entrega
 
 Playwright descubrió 45 combinaciones (15 casos por navegador). Se ejecutaron 4 casos en Chromium del sistema contra ParaBank: los tres de campos vacíos y el registro vacío; los cuatro aprobaron. Después de configurar la cuenta de prueba, aprobaron en Chromium los dos casos de cuentas: consulta y detalles, y reutilización de sesión guardada (2 aprobados). La transferencia real sigue sin ejecutarse. Se habilita CI para PR dirigidos a refactor-pom para verificar la adaptación en los tres navegadores.
+
+## Ajuste por bloqueo del sitio público
+
+Los reportes del CI 42328302101 contienen la página de Cloudflare Error 1015, “You are being rate limited”. Es un bloqueo temporal del entorno externo; no demuestra un defecto en los localizadores ni en las credenciales. No se reejecuta inmediatamente.
+
+El CI utiliza una sola versión de Node (22), un worker, sin reintentos y se detiene tras el primer fallo. La concurrencia del workflow se serializa para reducir ejecuciones simultáneas. Se mantienen los tres navegadores y las comprobaciones funcionales. Esto reduce carga pero no garantiza que desaparezca el límite externo.
+
+La transferencia opcional se omite al declarar su grupo, antes de preparar fixtures o iniciar sesión. La prueba de sesión guardada utiliza un contexto explícito con cierre garantizado; los casos anónimos no reciben ese estado.
+
+Validación de estos cambios: descubrimiento de pruebas y omisión del caso CP-06 sin credenciales; no se repite una ejecución contra el sitio durante el bloqueo temporal.
