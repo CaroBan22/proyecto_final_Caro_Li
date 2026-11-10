@@ -1,36 +1,52 @@
-# Matriz de trazabilidad v1 — ParaBank
+# Matriz de trazabilidad — ParaBank
 
-**Curso:** QA Automatizador — Tecsup
-**Proyecto:** ParaBank · https://parabank.parasoft.com/parabank/
-**Actualizado:** 22/10/2026 · **Estado:** diseño enlazado; ejecución manual funcional pendiente.
-**Fuentes:** `docs/casos-manuales-v1.md`, `docs/sesion-exploratoria-1.md`, `docs/reporte-defectos-v1.md`.
+**Curso:** QA Automatizador — Tecsup  
+**Actualización documental:** 9 de noviembre de 2026 (America/Lima).  
+**Estado:** ejecución automatizada parcial en Chromium; ejecución manual formal pendiente.
 
-Los requisitos R01–R07 son criterios de prueba propuestos/inferidos, no una especificación oficial. El estado de un caso solo cambia tras registrar ejecución y evidencia.
+R01–R07 conservan los criterios propuestos del diseño original. R08–R09 amplían la cobertura de sesión y apertura bancaria; son criterios inferidos, no una especificación oficial. T01 es un objetivo técnico de sincronización. Una prueba aprobada no acredita un requisito completo ni todos los entornos.
 
-## 1. Requisitos → casos → hallazgos
+Fuentes: [casos manuales](casos-manuales-v1.md), [hallazgos originales](reporte-defectos-v1.md), [índice de evidencias](../evidencias/indice-validaciones.md).
 
-| ID | Requisito / criterio a validar | Flujo | Casos | Estado | Hallazgos vinculados | Hueco principal |
-|---|---|---|---|---|---|---|
-| R01 | Registro con datos personales completos, usuario disponible y contraseña confirmada; validar campos faltantes, duplicado y errores combinados. | F01 | CP-01, CP-02, CP-13, CP-14, CP-15 | Por ejecutar | — | Criterios y mensajes son propuestas pendientes de confirmar con la interfaz. |
-| R02 | Acceso válido y rechazo de credenciales incorrectas; los campos de acceso exponen nombres accesibles. | F02 | CP-03, CP-04; ACC-01 | CP-03/04 por ejecutar; ACC-01 observación técnica en Chromium | OBS-A11Y-01, pendiente de clasificación | Confirmar con lector de pantalla. |
-| R03 | Mostrar las cuentas asociadas al usuario autenticado. | F03 | CP-05 | Por ejecutar | — | No hay caso de acceso sin sesión. |
-| R04 | Transferir monto positivo entre cuentas distintas y reflejar resultado coherente. | F04 | CP-06 | Por ejecutar | O (S/1 confirmada) en notas; nueva ejecución pendiente | Capturar saldos y movimiento antes/después. |
-| R05 | Aplicar regla acordada a monto cero, importe mayor al disponible y misma cuenta. | F04 | CP-07, CP-08, CP-09 | Regla y ejecución pendientes | OBS-01 a OBS-04, transcritos de notas y no reproducidos ahora | Confirmar política esperada y repetir con evidencia. |
-| R06 | Guardar y conservar cambios de contacto. | F05 | CP-10 | Por ejecutar | — | Agregar caso negativo si el formulario tiene campos requeridos. |
-| R07 | Responder de forma apropiada a recuperación con datos válidos e incompletos. | F06 | CP-11, CP-12 | Por ejecutar | OBS-05, transcrito de notas y no reproducido ahora | Probar datos ficticios verificados y conservar mensaje exacto. |
+## Requisitos y cobertura
 
-## 2. Cobertura y estado
+| ID | Criterio | Casos manuales diseñados | Automatización relacionada | Resultado acreditado | Pendiente |
+|---|---|---|---|---|---|
+| R01 | Registro: campos requeridos, disponibilidad y confirmación de contraseña | CP-01, CP-02, CP-13, CP-14, CP-15 | REG-01; REG-CTRL-01/02; FORM-02/03 | Registro vacío y corrección parcial comprobados en Chromium; controles: 6 aprobadas en tres repeticiones | Alta positiva, duplicados, contraseña y errores combinados; ejecución manual formal |
+| R02 | Acceso válido, rechazo de credenciales incorrectas y accesibilidad del login | CP-03, CP-04; ACC-01 | AUTH-POS-01; AUTH-NEG-01 a 05; FORM-01 | Acceso/formularios con IDs: 10 aprobadas en Chromium junto a logout; validaciones de acceso incluidas en la suite repetida anterior | Accesibilidad y confirmación actual en otros navegadores/CI; CP manuales |
+| R03 | Mostrar cuentas del usuario y detalles consistentes | CP-05 | CP-05 automatizado; CUENTAS-02; CP-ESPERA-01 a 04 | Consultas aprobadas en Chromium; bloque de esperas: 12 aprobadas en tres repeticiones | Acceso sin sesión y usuarios sin cuentas; otros entornos |
+| R04 | Transferir entre cuentas distintas y reflejar resultado coherente | CP-06 | BANK-E2E; CP-06 automatizado | BANK-E2E con JSON: 1 aprobada en 18.0 s, incluye conciliación y persistencia | El CP-06 independiente siguió omitido en suite general; historial del camino exitoso y CP manual formal |
+| R05 | Reglas para cero, saldo insuficiente, misma cuenta y formato inválido | CP-07, CP-08, CP-09 | TRANSFER-NEG-01/02 para vacío y no numérico | HTTP 400, saldos e historiales conservados: 6 aprobadas en 27.1 s | No extrapolar a cero, negativos, saldo insuficiente, misma cuenta ni cuentas ajenas; confirmar reglas |
+| R06 | Guardar y conservar cambios de contacto | CP-10 | Sin automatización acreditada | Pendiente | Caso positivo y negativos, ejecución y evidencia |
+| R07 | Recuperación de acceso con datos válidos e incompletos | CP-11, CP-12 | Sin automatización acreditada | Pendiente | Datos ficticios verificados, reglas y mensajes |
+| R08 | Logout y persistencia tras un nuevo acceso | Ampliación del alcance; falta ficha manual | AUTH-OUT-01; CUENTAS-02; BANK-E2E | Logout aprobado en autenticación; BANK-E2E verifica saldos tras nuevo login | Protección de páginas sin sesión y caducidad; otros navegadores |
+| R09 | Abrir cuenta desde otra existente y conservar el total mediante depósito interno | Ampliación del alcance; falta ficha manual | BANK-E2E | Cuenta dinámica, depósito y saldos comprobados en Chromium | Otros tipos de cuenta, reglas negativas y pruebas independientes de apertura |
+| T01 | Sincronizar consultas sin pausas fijas en suite habitual | No aplica como requisito de negocio | CP-ESPERA-01 a 04 | expect.poll, toPass, waitForURL y waitForResponse: 12 aprobadas en 54.8 s | Firefox, WebKit y CI |
 
-- 7 de 7 requisitos tienen casos asociados (cobertura de diseño, no ejecución).
-- 15 casos funcionales CP-01 a CP-15 están diseñados; no hay resultados manuales registrados para ellos.
-- ACC-01 documenta la comprobación técnica de accesibilidad del login. Se observó falta de nombre programático en Chromium; la validación con lector de pantalla sigue pendiente.
-- OBS-01 a OBS-05 proceden de la imagen de notas exploratorias. Son candidatos por reproducir, no defectos confirmados.
-- No se acreditan tickets de Jira.
+Los IDs de automatización enlazan pruebas concretas, no renumeran las fichas manuales originales. Compartir ID CP-05/CP-06 no implica que todos sus pasos manuales estén ejecutados.
 
-## 3. Huecos y acciones siguientes
+## Resultados de ejecución
 
-1. Ejecutar CP-01 a CP-15 y guardar fecha, navegador, resultado y evidencia individual.
-2. Reproducir OBS-01 a OBS-05; documentar saldos/movimientos y resultado exacto. Confirmar reglas de negocio antes de marcar FAIL.
-3. Revisar ACC-01 con lector de pantalla y documentar el resultado; completar teclado, contraste y texto alternativo.
-4. Registrar casos/defectos en Jira solo si el proyecto está disponible y enlazar los tickets reales.
-5. Actualizar la matriz después de cada evidencia, sin convertir cobertura diseñada en aprobada.
+Consultar [el índice](../evidencias/indice-validaciones.md) para el origen de cada resultado. No sumar ejecuciones históricas como si fueran casos diferentes.
+
+- Suite de Chromium anterior a los PR #10–#12: **54 aprobadas y 6 omitidas en 3.1 min** (18 casos activos por tres repeticiones). Las omisiones fueron BANK-E2E y CP-06 por tres repeticiones.
+- IDs y formularios del PR #10: **10 aprobadas en 29.7 s**.
+- BANK-E2E con JSON del PR #10: **1 aprobada en 18.0 s**, ejecutada por separado; no fue omitida en esa ejecución.
+- Controles de registro del PR #11: **6 aprobadas en 12.7 s**.
+- Transferencias inválidas del PR #12: **6 aprobadas en 27.1 s**.
+- Estas ejecuciones no acreditan una repetición conjunta de la versión final con todas las incorporaciones.
+
+## Hallazgos
+
+- OBS-01 a OBS-05 siguen como candidatos originales pendientes de reproducción y confirmación de reglas.
+- OBS-A11Y-01 / ACC-01 conserva su inspección técnica; lector de pantalla pendiente.
+- El mensaje genérico al rechazar transferencias inválidas se documenta en [transferencias inválidas](transferencias-invalidas.md). El rechazo funciona en los casos comprobados; la calidad del mensaje requiere evaluación y ficha de hallazgo. No hay ticket Jira acreditado.
+- Las cuentas vacías y errores internos de sesiones anteriores son observaciones de ejecuciones concretas; no se atribuye causa de backend sin evidencia.
+
+## Cierre pendiente
+
+1. Ejecutar y documentar individualmente CP-01 a CP-15; conservar los pendientes manuales aunque exista automatización relacionada.
+2. Incorporar evidencias originales recientes al repositorio, revisadas para no exponer credenciales o sesión.
+3. Validar versión actual en Firefox, WebKit y CI; actualizar resultados tras cambios funcionales.
+4. Completar contacto, recuperación y accesibilidad, y contrastar las reglas negativas pendientes.
+5. Registrar tickets solo si existe un espacio Jira disponible y usar enlaces reales.
