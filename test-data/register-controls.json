@@ -1,0 +1,4 @@
+[
+  { "id": "REG-CTRL-01", "name": "completar el nombre elimina su error y mantiene el apellido obligatorio", "field": "customer.firstName", "value": "NombrePrueba", "error": "First name is required." },
+  { "id": "REG-CTRL-02", "name": "completar el usuario elimina su error y mantiene el apellido obligatorio", "field": "customer.username", "value": "usuario_control_ficticio", "error": "Username is required." }
+]
