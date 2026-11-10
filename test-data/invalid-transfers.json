@@ -1,0 +1,4 @@
+[
+  { "id": "TRANSFER-NEG-01", "name": "importe vacío se rechaza sin modificar cuentas", "amount": "" },
+  { "id": "TRANSFER-NEG-02", "name": "importe no numérico se rechaza sin modificar cuentas", "amount": "abc" }
+]
