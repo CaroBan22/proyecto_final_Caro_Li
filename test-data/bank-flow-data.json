@@ -1,4 +1,14 @@
-{
-  "accountType": "CHECKING",
-  "transferAmount": "1.00"
-}
+[
+  {
+    "id": "BANK-E2E-01",
+    "description": "abre una cuenta corriente",
+    "accountType": "CHECKING",
+    "transferAmount": "1.00"
+  },
+  {
+    "id": "BANK-E2E-02",
+    "description": "abre una cuenta de ahorro",
+    "accountType": "SAVINGS",
+    "transferAmount": "2.00"
+  }
+]
