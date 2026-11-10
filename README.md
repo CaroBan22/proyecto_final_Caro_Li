@@ -322,3 +322,7 @@ Consultar [la correspondencia y los comandos](docs/adaptacion-profesor.md). Se c
 Los títulos de los tests principales incluyen ID y resultado en español. Login y logout usan AUTH-NEG-04/05, AUTH-POS-01 y AUTH-OUT-01; el formulario usa FORM-01/02/03. Se conservan los IDs existentes de otros flujos. Estos IDs de automatización deben asociarse a los requisitos en la matriz; añadir el prefijo no acredita esa trazabilidad.
 
 BANK-E2E lee `accountType` y `transferAmount` de `test-data/bank-flow-data.json`. Las credenciales y la cuenta de origen siguen en variables de entorno; el depósito mínimo y la cuenta nueva se obtienen del sitio. Los datos ficticios se separan del estado del entorno.
+
+### Validación de IDs y datos externos
+
+Las capturas de terminal compartidas por la autora validan en Chromium la rama `refactor/ids-y-datos-flujo`: autenticación y formularios con los nuevos IDs, **10 aprobadas en 29.7 s**; BANK-E2E leyendo el JSON, **1 aprobada en 18.0 s**, sin reintentos. Esta última ejecución incluye apertura, transferencia, conciliación, logout y nuevo login. No acredita Firefox, WebKit ni CI. Al terminar se desactivó `RUN_OPEN_ACCOUNT_FLOW`; mantener una sola definición de cada variable en `.env`.
