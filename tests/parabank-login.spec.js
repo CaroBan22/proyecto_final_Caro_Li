@@ -5,17 +5,17 @@ test.describe('Formulario de acceso y registro', () => {
     await page.goto('./index.htm');
   });
 
-  test('muestra los campos de usuario y contraseña y el botón de inicio de sesión', async ({ page }) => {
+  test('FORM-01: muestra los campos de usuario y contraseña y el botón de inicio de sesión', async ({ page }) => {
     await expect(page.locator('input[name="username"]')).toBeVisible();
     await expect(page.locator('input[name="password"]')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Log In' })).toBeVisible();
   });
 
-  test('muestra el enlace de registro', async ({ page }) => {
+  test('FORM-02: muestra el enlace de registro', async ({ page }) => {
     await expect(page.getByRole('link', { name: 'Register' })).toBeVisible();
   });
 
-  test('abre el formulario de registro', async ({ page }) => {
+  test('FORM-03: abre el formulario de registro', async ({ page }) => {
     await page.getByRole('link', { name: 'Register' }).click();
 
     await expect(page.locator('input[name="customer.firstName"]')).toBeVisible();
