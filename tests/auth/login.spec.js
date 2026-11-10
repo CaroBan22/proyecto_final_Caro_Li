@@ -1,7 +1,7 @@
 import { test, expect } from './fixture.js';
 
 test.describe('Autenticación', () => {
-  test('no crea sesión para un usuario inválido', async ({
+  test('AUTH-NEG-04: no crea sesión para un usuario inválido', async ({
     page,
     loginPage,
     credentials,
@@ -18,7 +18,7 @@ test.describe('Autenticación', () => {
     );
   });
 
-  test('rechaza una contraseña incorrecta', async ({
+  test('AUTH-NEG-05: rechaza una contraseña incorrecta', async ({
     page,
     loginPage,
     credentials,
@@ -38,7 +38,7 @@ test.describe('Autenticación', () => {
     );
   });
 
-  test('permite iniciar sesión con credenciales configuradas', async ({
+  test('AUTH-POS-01: permite iniciar sesión con credenciales configuradas', async ({
     page,
     loginPage,
     credentials,
