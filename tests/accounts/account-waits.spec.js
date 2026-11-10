@@ -30,12 +30,19 @@ test.describe('Esperas condicionales en cuentas', () => {
   test('CP-ESPERA-02: espera datos coherentes de cuenta mediante toPass', async ({ accountsPage, accountDetailsPage }) => {
     await expect(accountsPage.accountLinks.first()).toBeVisible();
     const id = (await accountsPage.accountLinks.first().innerText()).trim();
+    const row = accountsPage.table.locator('tbody tr').filter({
+      has: accountsPage.page.getByRole('link', { name: id, exact: true }),
+    });
+    const summaryBalance = row.locator('td').nth(1);
+    // La sincronización comprueba formato y coherencia; no impone saldo positivo.
+    await expect(summaryBalance).toHaveText(/^-?\$[\d,]+\.\d{2}$/);
+    const expectedBalance = (await summaryBalance.innerText()).trim();
     await accountsPage.openAccount(id);
     // Solo se reintentan lecturas: nunca repetir un envío transaccional dentro de toPass.
     await expect(async () => {
       await expect(accountDetailsPage.heading).toBeVisible();
       await expect(accountDetailsPage.accountId).toHaveText(id);
-      await expect(accountDetailsPage.balance).toHaveText(/^\$[\d,]+\.\d{2}$/);
+      await expect(accountDetailsPage.balance).toHaveText(expectedBalance);
     }).toPass({ timeout: 10000 });
   });
 
