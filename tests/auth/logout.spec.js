@@ -1,6 +1,6 @@
 import { test, expect } from './fixture.js';
 
-test('cierra sesión y muestra el formulario de acceso', async ({
+test('AUTH-OUT-01: cierra sesión y muestra el formulario de acceso', async ({
   loggedInPage,
 }) => {
   await loggedInPage.getByRole('link', { name: 'Log Out' }).click();

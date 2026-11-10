@@ -55,6 +55,7 @@ Este alcance incluye funcionalidades diseñadas que todavía no cuentan con auto
 - `tests/auth/logout.spec.js`: prueba de cierre de sesión.
 - `tests/auth/login-data.spec.js`: pruebas parametrizadas de campos obligatorios.
 - `test-data/data-login.json`: datos ficticios para las pruebas parametrizadas.
+- `test-data/bank-flow-data.json`: tipo de cuenta e importe del flujo BANK-E2E, sin credenciales ni números de cuenta.
 - `tests/parabank-login.spec.js`: comprobaciones del formulario y del acceso al registro.
 - `evidencias/`: capturas y fichas de evidencia.
 - `.github/workflows/node.js.yml`: ejecución de pruebas en GitHub Actions.
@@ -98,7 +99,7 @@ Las capturas y los pasos del reporte compartidos por la autora acreditan estas e
 
 BANK-E2E creó la cuenta **20781** desde la cuenta de prueba **20226** y comprobó los saldos después de la apertura, después de la transferencia y tras volver a iniciar sesión. El reporte incluye el paso de persistencia y el adjunto `conciliacion`. Estos números identifican esa ejecución; no son datos permanentes para futuras pruebas.
 
-El historial de movimientos no se comprueba en BANK-E2E. La aprobación local no acredita la ejecución del flujo en CI, Firefox o WebKit, ni tres repeticiones de la suite.
+El historial de movimientos no se comprueba en BANK-E2E. La aprobación local no acredita la ejecución del flujo en CI, Firefox o WebKit, ni tres repeticiones del flujo transaccional. La suite sin movimientos sí se repitió, según el resultado detallado en la sección de estabilidad.
 
 ## 8. Estado de hallazgos y pruebas manuales
 
@@ -259,7 +260,7 @@ CP-06 es otro caso: requiere `RUN_BANK_MUTATIONS=true` y dos cuentas distintas e
 
 Para conservar salida de terminal y generar HTML, usar `--reporter=list,html`. Usar solo `--reporter=list` no actualiza el HTML y puede dejar visible un reporte anterior.
 
-La comprobación de estabilidad exigida por el curso sigue pendiente. Con ambas variables de operaciones en `false`:
+La autora verificó la suite previa a esta refactorización en Chromium con tres repeticiones: **54 aprobadas y 6 omitidas en 3.1 minutos**, sin fallos ni reintentos. Las seis omisiones son BANK-E2E y CP-06 por tres repeticiones. Ese resultado no acredita las operaciones omitidas ni otros navegadores. Para repetirla con ambas variables de operaciones en `false`:
 
 ```bash
 npx playwright test --project=chromium --workers=1 --retries=0 --repeat-each=3 --reporter=list,html
@@ -296,8 +297,8 @@ Las pruebas autenticadas requieren una cuenta válida en ParaBank. Una ejecució
 
 - Verificar la ejecución actual en CI con credenciales y cuentas vigentes.
 - Validar BANK-E2E en Firefox y WebKit; no extrapolar el resultado de Chromium.
-- Completar la comprobación de estabilidad con `--repeat-each=3` y registrar aprobadas y omitidas.
-- Uniformar IDs en todos los títulos, separar los datos del flujo en JSON y completar pruebas de validaciones intermedias.
+- Revalidar estabilidad tras cambios funcionales; la ejecución anterior de Chromium aprobó 54 ejecuciones y omitió 6, sin movimientos de saldo.
+- Completar pruebas de validaciones intermedias y mantener la trazabilidad de los IDs. Los tests principales ya incluyen ID; BANK-E2E obtiene tipo e importe del JSON.
 - Actualizar la matriz de trazabilidad con los casos automatizados y sus evidencias.
 - Ejecutar CP-01 a CP-15 y guardar fecha, resultado y evidencia.
 - Reproducir OBS-01 a OBS-05 y confirmar las reglas esperadas antes de registrar defectos.
@@ -315,3 +316,13 @@ Este repositorio refleja un proyecto académico en evolución. La documentación
 ## Adaptación de la estructura del curso
 
 Consultar [la correspondencia y los comandos](docs/adaptacion-profesor.md). Se centralizaron fixtures y se agregaron páginas de registro, cuentas, detalles y transferencia, además de reutilización de sesión en memoria. La validación local observada se detalla en la sección 7. BANK-E2E está aprobado en Chromium; las verificaciones pendientes se mantienen explícitas. La equivalencia del flujo bancario con el checkout del curso debe confirmarse con el profesor.
+
+## IDs y datos del flujo
+
+Los títulos de los tests principales incluyen ID y resultado en español. Login y logout usan AUTH-NEG-04/05, AUTH-POS-01 y AUTH-OUT-01; el formulario usa FORM-01/02/03. Se conservan los IDs existentes de otros flujos. Estos IDs de automatización deben asociarse a los requisitos en la matriz; añadir el prefijo no acredita esa trazabilidad.
+
+BANK-E2E lee `accountType` y `transferAmount` de `test-data/bank-flow-data.json`. Las credenciales y la cuenta de origen siguen en variables de entorno; el depósito mínimo y la cuenta nueva se obtienen del sitio. Los datos ficticios se separan del estado del entorno.
+
+### Validación de IDs y datos externos
+
+Las capturas de terminal compartidas por la autora validan en Chromium la rama `refactor/ids-y-datos-flujo`: autenticación y formularios con los nuevos IDs, **10 aprobadas en 29.7 s**; BANK-E2E leyendo el JSON, **1 aprobada en 18.0 s**, sin reintentos. Esta última ejecución incluye apertura, transferencia, conciliación, logout y nuevo login. No acredita Firefox, WebKit ni CI. Al terminar se desactivó `RUN_OPEN_ACCOUNT_FLOW`; mantener una sola definición de cada variable en `.env`.

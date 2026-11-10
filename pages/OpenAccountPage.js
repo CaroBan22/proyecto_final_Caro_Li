@@ -8,8 +8,8 @@ export class OpenAccountPage {
     this.newAccountId = page.locator('#newAccountId');
   }
   async goto() { await this.page.goto('./openaccount.htm'); }
-  async open(from) {
-    await this.type.selectOption({ label: 'CHECKING' });
+  async open(from, accountType = 'CHECKING') {
+    await this.type.selectOption({ label: accountType });
     await this.fromAccount.selectOption(from);
     await this.submit.click();
   }
