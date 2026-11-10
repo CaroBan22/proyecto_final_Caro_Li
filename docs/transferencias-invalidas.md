@@ -6,7 +6,7 @@ TRANSFER-NEG-01 envía importe vacío y TRANSFER-NEG-02 envía `abc`, desde dato
 
 Se observa el POST real de transferencia, se exige HTTP 400 y un detalle relativo a `amount`, se comprueba ausencia de confirmación exitosa y presencia del panel de error. Luego se comparan saldos del resumen e historiales de ambas cuentas con su estado anterior. El adjunto `rechazo-transferencia` registra la comparación.
 
-Validación en Chromium del sistema contra ParaBank: **2 aprobadas en 10.4 segundos**, un worker, sin reintentos. Los saldos y los historiales consultados permanecieron iguales. Durante la implementación se corrigió la espera que elegía un mensaje vacío oculto en lugar de las filas visibles del historial. Pendientes otros navegadores, CI y repetición de estabilidad de este bloque.
+Validación en Chromium del sistema contra ParaBank: **2 aprobadas en 10.4 segundos**, un worker, sin reintentos. Los saldos y los historiales consultados permanecieron iguales. Durante la implementación se corrigió la espera que elegía un mensaje vacío oculto en lugar de las filas visibles del historial. Posteriormente se repitieron ambos casos tres veces: **6 aprobadas en 27.1 segundos**, un worker, sin reintentos, con reporte HTML. Todas las ejecuciones rechazaron los importes con HTTP 400 y conservaron saldos e historiales. Pendientes otros navegadores y CI.
 
 ## Configuración local
 
