@@ -9,10 +9,12 @@
   },
   "scripts": {
     "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium --workers=1",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "test:auth": "playwright test tests/auth/login.spec.js",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "report:allure": "allure generate allure-results --output allure-report --clean && allure open allure-report"
   },
   "repository": {
     "type": "git",
