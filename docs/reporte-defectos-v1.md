@@ -12,7 +12,17 @@
 | ID | Hallazgo anotado | Requisito / caso | Estado y validación pendiente |
 |---|---|---|---|
 | OBS-01 | La nota indica que se aceptó transferir S/ 0.00 entre cuentas diferentes. | R05 / CP-07 | Transcrito de la imagen; reproducir y guardar mensaje/saldos antes y después. |
-| OBS-02 | La nota indica que se aceptó transferir S/ 0.00 a la misma cuenta. | R05 / CP-07 y CP-09 | Transcrito; confirmar cuentas seleccionadas, efecto y regla esperada. |
+| OBS-02 | La nota indica que se aceptó transferir S/ 0.00 a la misma cue### Nueva corrida completa en Chromium
+
+Resultado: 20 aprobadas, 2 fallidas y 5 omitidas,
+sin pruebas pendientes de ejecución, en 1,7 minutos.
+
+Fallan AUTH-NEG-04 y AUTH-NEG-05. En ambos contextos
+de error aparecen la misma identidad de cliente, cuentas,
+saldos y Log Out tras introducir credenciales inválidas.
+
+La causa sigue pendiente de investigación.
+Las operaciones bancarias opcionales estaban desactivadas.nta. | R05 / CP-07 y CP-09 | Transcrito; confirmar cuentas seleccionadas, efecto y regla esperada. |
 | OBS-03 | La nota indica que se aceptaron montos mayores al saldo disponible. | R05 / CP-08 | Transcrito; falta saldo inicial/final y política de sobregiro. |
 | OBS-04 | La nota indica que se aceptó una transferencia positiva a la misma cuenta. | R05 / CP-09 | Transcrito; reproducir y revisar movimiento/saldos y regla de negocio. |
 | OBS-05 | La nota indica que no se logró recuperar la cuenta con *Forgot Login Info*. | R07 / CP-11 | Transcrito; probar datos ficticios verificados y guardar mensaje exacto. |
@@ -112,3 +122,4 @@ Esto acredita el comportamiento observado. Todavía no determina si la causa est
 - Investigar la respuesta de login y el estado de sesión inicial sin realizar transferencias ni modificar saldos.
 - Conservar el ZIP fuera del repositorio público porque contiene información de sesión. Preparar una copia depurada antes de compartir evidencia públicamente.
 - Una vez determinada la causa, registrar la clasificación y verificar la corrección con los mismos casos. No modificar las expectativas únicamente para obtener una ejecución en verde.
+
