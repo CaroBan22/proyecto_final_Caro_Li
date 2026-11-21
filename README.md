@@ -1,358 +1,239 @@
-# Proyecto QA ParaBank
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+```bash
+npm run test:chromium
+```
 
-## 1. Descripción
+En la versión con ambos BANK-E2E, CP-06 y los dos negativos de transferencia, esas variables desactivadas omiten cinco casos por navegador. Las omisiones no son aprobaciones. Registrar el inventario real de cada corrida; cambia al añadir pruebas.
 
-Proyecto académico de aseguramiento de calidad para el curso QA Automatizador de Tecsup. El sistema bajo prueba es ParaBank, una aplicación bancaria de demostración desarrollada por Parasoft. El repositorio centraliza la documentación de pruebas, la evidencia generada y la automatización inicial con Playwright.
+### Validaciones específicas sin movimientos
 
-## 2. Objetivo
-
-Evaluar flujos funcionales y aspectos básicos de accesibilidad mediante diseño de casos manuales, exploración y automatización con Playwright.
-
-La automatización adapta la organización del ejemplo del curso mediante Page Objects, fixtures y pruebas parametrizadas con datos separados.
-
-## 3. Sistema bajo prueba
-
-- **URL:** https://parabank.parasoft.com/parabank/
-- **Tipo:** aplicación web bancaria de demostración.
-- **Estado:** en desarrollo; la ejecución manual y validación de hallazgos siguen pendientes.
-
-## 4. Funcionalidades contempladas
-
-- Registro de clientes.
-- Inicio y cierre de sesión.
-- Recuperación de credenciales.
-- Consulta de cuentas y saldos.
-- Transferencias.
-- Actualización de información personal.
-- Revisión básica de accesibilidad.
-
-Este alcance incluye funcionalidades diseñadas que todavía no cuentan con automatización completa.
-
-## 5. Herramientas
-
-- Git y GitHub para control de versiones.
-- Playwright para pruebas automatizadas.
-- Chromium, Firefox y WebKit para ejecución de pruebas.
-- DevTools para inspeccionar la aplicación y sus peticiones.
-- GitHub Actions para integración continua.
-- Jira para gestión de casos y defectos, si se confirma el espacio del curso.
-
-## 6. Estructura del repositorio
-
-- `docs/`: plan de pruebas, casos manuales, matriz de trazabilidad, tabla de decisión, reglas del proyecto, reporte de hallazgos, sesión exploratoria y mapa de flujos.
-- `pages/LoginPage.js`: Page Object del formulario de acceso.
-- `tests/fixtures.js`: fixtures centrales de autenticación, páginas y sesión guardada en memoria.
-- `tests/auth/fixture.js`: reexportación de las fixtures centrales por compatibilidad.
-- `pages/AccountsPage.js` y `pages/AccountDetailsPage.js`: consulta de cuentas y detalles.
-- `pages/RegisterPage.js`: formulario de registro.
-- `pages/OpenAccountPage.js`: apertura de cuenta bancaria.
-- `pages/TransferPage.js`: formulario y confirmación de transferencias.
-- `tests/accounts/accounts.spec.js`: consulta de cuentas y reutilización de sesión.
-- `tests/accounts/open-transfer.spec.js`: apertura, transferencia, conciliación y nuevo login.
-- `tests/registration/register.spec.js`: campos obligatorios de registro.
-- `tests/transfers/transfer.spec.js`: formulario y transferencia opcional entre cuentas configuradas.
-- `tests/auth/login.spec.js`: pruebas de credenciales válidas e inválidas.
-- `tests/auth/logout.spec.js`: prueba de cierre de sesión.
-- `tests/auth/login-data.spec.js`: pruebas parametrizadas de campos obligatorios.
-- `test-data/data-login.json`: datos ficticios para las pruebas parametrizadas.
-- `test-data/bank-flow-data.json`: dos escenarios de tipo de cuenta e importe del flujo BANK-E2E, sin credenciales ni números de cuenta.
-- `tests/parabank-login.spec.js`: comprobaciones del formulario y del acceso al registro.
-- `evidencias/`: capturas y fichas de evidencia.
-- `.github/workflows/node.js.yml`: ejecución de pruebas en GitHub Actions.
-- `.env.example`: plantilla de variables de entorno.
-- `playwright.config.js`: configuración de pruebas, navegadores y reportes.
-- `package.json`: dependencias y comandos de ejecución.
-
-Los archivos `tests/example.spec.js` y `tests/locators.spec.js` son ejercicios excluidos de la suite principal mediante `testMatch`.
-
-## 7. Casos automatizados de autenticación
-
-| Archivo | Caso |
-|---|---|
-| `login.spec.js` | No crea sesión para un usuario inválido. |
-| `login.spec.js` | Rechaza una contraseña incorrecta. |
-| `login.spec.js` | Permite iniciar sesión con credenciales válidas. |
-| `logout.spec.js` | Cierra sesión y muestra el formulario de acceso. |
-| `login-data.spec.js` | Rechaza el usuario vacío. |
-| `login-data.spec.js` | Rechaza la contraseña vacía. |
-| `login-data.spec.js` | Rechaza ambos campos vacíos. |
-
-Las pruebas parametrizadas toman los datos y mensajes esperados de `test-data/data-login.json`.
-
-### Resultados verificados
-
-Se ejecutaron los siete casos de autenticación en Chromium, Firefox y WebKit, con resultado de **21 pruebas aprobadas**.
-
-Después de ajustar la navegación inicial de `LoginPage` para abrir `./index.htm`, se ejecutaron nuevamente los siete casos en Chromium, con resultado de **7 pruebas aprobadas**.
-
-Estos resultados históricos corresponden a las ejecuciones locales observadas. No acreditan la ejecución manual de CP-01 a CP-15 ni la aprobación de toda la suite en GitHub Actions.
-
-### Validaciones locales adicionales
-
-Las capturas y los pasos del reporte compartidos por la autora acreditan estas ejecuciones separadas en Chromium:
-
-| Ejecución | Resultado | Alcance |
-|---|---|---|
-| Bloques de autenticación, cuentas, registro y formularios | 14 aprobadas y 1 omitida | CP-06 se omitió; este resultado no incluye BANK-E2E. |
-| Autenticación con cuenta de prueba renovada | 7 aprobadas en 24.2 s | Campos vacíos, acceso válido e inválido y logout. |
-| BANK-E2E, 9 de noviembre de 2026 | 1 aprobada en 18.7 s | Apertura, transferencia de USD 1, conciliación, logout y nuevo login. |
-
-BANK-E2E creó la cuenta **20781** desde la cuenta de prueba **20226** y comprobó los saldos después de la apertura, después de la transferencia y tras volver a iniciar sesión. El reporte incluye el paso de persistencia y el adjunto `conciliacion`. Estos números identifican esa ejecución; no son datos permanentes para futuras pruebas.
-
-El historial de movimientos no se comprueba en BANK-E2E. La aprobación local no acredita la ejecución del flujo en CI, Firefox o WebKit, ni tres repeticiones del flujo transaccional. La suite sin movimientos sí se repitió, según el resultado detallado en la sección de estabilidad.
-
-## 8. Estado de hallazgos y pruebas manuales
-
-Las notas exploratorias originales contienen cinco candidatos funcionales que requieren reproducción. Se registran en `docs/reporte-defectos-v1.md` sin presentarlos como defectos confirmados.
-
-Antes de confirmar cada candidato, se deben documentar las precondiciones, los pasos, el resultado obtenido, la evidencia y la regla de negocio esperada.
-
-ACC-01 registra una inspección técnica del nombre accesible de los campos de login. Falta completar la revisión con lector de pantalla y evaluar su impacto.
-
-## 9. Organización de la automatización
-
-### Page Object
-
-`pages/LoginPage.js` centraliza los localizadores y las acciones del formulario de acceso:
-
-- Campos de usuario y contraseña.
-- Botón `Log In`.
-- Mensaje de error.
-- Encabezado `Accounts Overview`.
-- Métodos `goto()` y `login()`.
-
-El método `goto()` abre `./index.htm` respecto de la URL base para conservar la ruta `/parabank/`.
-
-### Fixtures
-
-`tests/fixtures.js` proporciona las fixtures centrales; `tests/auth/fixture.js` las reexporta por compatibilidad:
-
-- `loginPage`: crea el Page Object y abre el formulario de acceso.
-- `credentials`: obtiene el usuario y la contraseña de las variables de entorno.
-- `loggedInPage`: inicia sesión, verifica la página de cuentas y entrega la página autenticada al test.
-- `bankStorageState`: genera el estado de sesión en memoria por worker.
-- `savedSessionPage`: abre un contexto independiente con el estado guardado.
-- `registerPage`, `accountsPage`, `accountDetailsPage` y `transferPage`: preparan las páginas de cada flujo.
-
-Cada prueba utiliza su propio contexto de navegador. La fixture permite reutilizar la preparación del acceso sin depender de una prueba anterior.
-
-### Datos parametrizados
-
-`test-data/data-login.json` contiene datos ficticios y mensajes esperados para las combinaciones de campos vacíos.
-
-`tests/auth/login-data.spec.js` recorre esos datos y genera una prueba independiente por entrada.
-
-## 10. Configuración local
-
-Ejecutar los comandos desde la carpeta raíz del proyecto.
-
-### Instalar dependencias
+Evidencia por etapas:
 
 ```bash
-npm ci
+npx playwright test tests/auth/report-evidence.spec.js --project=chromium --workers=1 --retries=0
 ```
 
-### Instalar navegadores
+Ciclo de sesión:
 
 ```bash
-npx playwright install --with-deps
+npx playwright test tests/auth/session-cycle.spec.js --project=chromium --workers=1 --retries=0
 ```
 
-### Configurar variables de entorno
+### Apertura y transferencia opcionales
 
-Copiar `.env.example` como `.env` y completar:
-
-```dotenv
-BASE_URL=https://parabank.parasoft.com/parabank/
-PARABANK_USERNAME=tu_usuario_de_prueba
-PARABANK_PASSWORD=tu_contraseña_de_prueba
-RUN_OPEN_ACCOUNT_FLOW=false
-RUN_BANK_MUTATIONS=false
-RUN_TRANSFER_NEGATIVE=false
-PARABANK_FROM_ACCOUNT=
-PARABANK_TO_ACCOUNT=
-```
-
-Los valores de usuario y contraseña del ejemplo son marcadores. Deben reemplazarse por los de una cuenta de prueba válida.
-
-Conservar la barra final de `BASE_URL`.
-
-El archivo `.env` está excluido de Git. No publicar credenciales en código, documentación ni capturas.
-
-## 11. Ejecución de pruebas
-
-### Toda la suite principal
-
-Antes de una ejecución general, conservar `RUN_OPEN_ACCOUNT_FLOW=false`, `RUN_BANK_MUTATIONS=false` y `RUN_TRANSFER_NEGATIVE=false` para omitir las operaciones que crean cuentas o transfieren saldo.
-
-### Comando general
+Activar únicamente `RUN_OPEN_ACCOUNT_FLOW=true` y configurar una cuenta de origen con saldo para **dos depósitos mínimos más USD 3**. Si cada depósito exige USD 100, se necesitan al menos USD 203. Revisar el saldo y la identidad del usuario antes de ejecutar; los números de cuenta históricos no garantizan disponibilidad.
 
 ```bash
-npm test
+npx playwright test tests/accounts/open-transfer.spec.js --project=chromium --workers=1 --retries=0
 ```
 
-### Todos los casos de autenticación en los tres navegadores
+Cada escenario abre una cuenta, transfiere, verifica confirmación y saldos, cierra sesión, vuelve a entrar y comprueba persistencia. Adjunta `conciliacion`. No comprueba el historial de movimientos.
 
-```bash
-npx playwright test tests/auth --workers=1
+Ejecutar operaciones con un navegador, un worker y cero reintentos. Si falla después del envío, revisar cuentas y movimientos antes de repetir. No hay reversión automática. Al terminar, restablecer las tres variables opcionales a `false`.
+
+### Reporteros y conservación
+
+La configuración publicada en la rama de reportes incluye terminal, HTML (`playwright-report/`), JSON (`results.json`), resultados Allure (`allure-results/`), captura al fallar y traza `retain-on-failure`.
+
+No añadir `--reporter=list,html` a los comandos habituales: sustituye la selección configurada y deja fuera JSON y Allure.
+
+`npm run report:allure` limpia el HTML anterior de `allure-report/`; no limpia `allure-results/`, que puede contener varias corridas. No interpretar un reporte acumulado como una corrida única sin comprobar los resultados incluidos. La configuración de historial y directorios automáticos por ejecución sigue pendiente.
+
+Antes de otra corrida, copiar la carpeta HTML completa y el JSON a una ubicación distinta. Las copias locales verificadas están en `evidencias-locales/REP-01/` y `evidencias-locales/AUTH-SES-01/`, excluidas de Git; no forman parte automática de una clonación del repositorio. Revisar datos sensibles antes de entregar reportes.
+
+### Integración continua
+
+`.github/workflows/node.js.yml` instala dependencias y navegadores, ejecuta `npm test` y conserva el HTML durante siete días. Utiliza secretos del repositorio para las credenciales. La configuración revisada detiene CI al primer fallo; los casos restantes figuran sin ejecutar. Actualmente no archiva JSON ni resultados Allure como artefactos separados.
+
+## 6. Estructura y diseño
+
+```text
+pages/                         Page Objects por pantalla
+  LoginPage.js
+  AccountsPage.js
+  AccountDetailsPage.js
+  RegisterPage.js
+  OpenAccountPage.js
+  TransferPage.js
+tests/
+  fixtures.js                  Fixtures centrales y sesión en memoria
+  auth/                        Login, logout, datos, REP-01 y ciclo de sesión
+  accounts/                    Consultas, esperas y apertura/transferencia
+  registration/                Campos obligatorios y controles intermedios
+  transfers/                   Formulario, transferencia y rechazos
+  parabank-login.spec.js       Formulario de acceso y navegación al registro
+test-data/                     Datos ficticios en JSON
+demos/                         Demostraciones fuera de la suite principal
+docs/                          Plan, trazabilidad, casos y hallazgos
+evidencias/                    Evidencia versionada y fichas
+.github/workflows/node.js.yml  CI
+.env.example                   Plantilla sin credenciales
+playwright.config.js           Navegadores, selección de tests y reporteros
+package.json                   Dependencias y scripts
 ```
 
-### Todos los casos de autenticación en Chromium
+`tests/auth/fixture.js` reexporta las fixtures centrales. `loggedInPage` prepara una sesión por prueba; `bankStorageState` obtiene estado en memoria por worker y `savedSessionPage` lo usa en un contexto independiente. El estado guardado no se aplica globalmente a las pruebas anónimas.
 
-```bash
-npx playwright test tests/auth --project=chromium --workers=1
-```
+La suite principal usa aserciones por estado, `expect.poll`, `toPass`, esperas de URL y respuesta. Los reintentos de lectura no repiten envíos transaccionales. Los límites `test.setTimeout` no son esperas fijas. `tests/example.spec.js`, `tests/locators.spec.js` y las demostraciones de `demos/` no pertenecen a la selección principal.
 
-### Solo los tres casos de login
+## 7. Métricas, hallazgos y pendientes
 
-```bash
-npm run test:auth
-```
+### Resultados observados
 
-Este comando ejecuta únicamente `tests/auth/login.spec.js`.
+Estas son ejecuciones **separadas**, de distintas versiones y alcances. No sumar sus cifras como casos únicos ni presentarlas como una sola validación final.
 
-### Solo cierre de sesión
+| Ejecución | Navegador | Aprobadas | Fallidas | Omitidas | Sin ejecutar | Duración |
+|---|---|---:|---:|---:|---:|---|
+| Suite anterior a los dos escenarios BANK-E2E | Chromium | 21 | 0 | 3 | No informado | 1,4 min |
+| Dos escenarios BANK-E2E del PR #15 | Chromium del sistema | 2 | 0 | 0 | 0 | 13,4 s |
+| Suite local del 13/11/2026, antes de añadir REP-01 y ciclo de sesión | Chromium | 18 | 2 | 5 | 0 | 1,4 min |
+| Negativos de autenticación aislados del 13/11/2026 | Chromium | 0 | 2 | 0 | 0 | 17,6 s |
+| CI del artefacto `playwright-report-22-2.zip` | Chromium hasta la detención | 9 | 1 | 2 | 66 | 18,3 s |
+| FORM-01 a FORM-03; reporteros comprobados | Chromium | 3 | 0 | 0 | 0 | 8,0 s |
+| REP-01; capturas de acceso y registro verificadas | Chromium | 1 | 0 | 0 | 0 | 3,3 s |
+| AUTH-SES-01; login, logout y nuevo login | Chromium | 1 | 0 | 0 | 0 | 6,5 s |
 
-```bash
-npx playwright test tests/auth/logout.spec.js --project=chromium
-```
+En la corrida de CI se planificaron 78 ejecuciones entre los proyectos configurados. Las 66 no ejecutadas se distinguen de las dos omitidas por configuración. La traza y las capturas verifican AUTH-NEG-04; AUTH-NEG-05 no llegó a ejecutarse en esa corrida.
 
-### Solo los casos parametrizados
+La aprobación aislada de AUTH-SES-01 no demuestra que el fallo anterior de nuevo login del flujo bancario esté resuelto. Una corrida conjunta anterior terminó con 6 aprobadas, 1 fallida y 18 sin ejecutar; falló al volver a entrar después de una transferencia.
 
-```bash
-npx playwright test tests/auth/login-data.spec.js --project=chromium
-```
+La suite sin movimientos de una versión anterior también se repitió tres veces con 54 aprobadas y 6 omitidas en 3,1 minutos. Existe una validación histórica de Firefox con 20 aprobadas y 4 omitidas. Ninguno de esos resultados acredita la estabilidad o cobertura completa de la versión actual.
 
-### Ejecutar con navegador visible
+### Hallazgos
 
-```bash
-npm run test:headed
-```
+- **AUTH-OBS-01:** acceso a cuentas tras introducir un usuario inválido. Evidencia local, manual reportada y de CI; causa pendiente. Las aserciones de AUTH-NEG-04/05 permanecen vigentes y los fallos no se ocultan como aprobaciones.
+- **OBS-01 a OBS-05:** candidatos procedentes de notas exploratorias, pendientes de reproducción actual y reglas de negocio verificables.
+- **OBS-A11Y-01 / ACC-01:** inspección técnica de nombres accesibles; revisión con lector de pantalla e impacto pendientes.
 
-### Abrir la interfaz de Playwright
+Consultar [reporte de hallazgos](docs/reporte-defectos-v1.md), [matriz de trazabilidad](docs/matriz-trazabilidad-v1.md), [adaptación al curso](docs/adaptacion-profesor.md) e [índice de validaciones](evidencias/indice-validaciones.md). Los documentos históricos pueden describir versiones anteriores; contrastar su alcance antes de reutilizar una cifra.
 
-```bash
-npm run test:ui
-```
+### Cierre pendiente
 
-### Consultar el reporte HTML
+1. Registrar enlace, commit y fecha exactos de la ejecución de CI del hallazgo.
+2. Investigar el acceso con credenciales inválidas y verificar la identidad de sesión antes de nuevas operaciones.
+3. Obtener una corrida completa del alcance final y conservar HTML o Allure, métricas y omisiones justificadas. No se presenta una suite final en verde.
+4. Revisar el resultado de Checks e integrar los cambios de la rama de reportes cuando corresponda; no asumir integración por haber hecho push.
+5. Completar archivo por ejecución e historial Allure si se incorporan; actualizar conjuntamente scripts, documentación y artefactos CI.
+6. Validar flujos bancarios en otros navegadores solo si forman parte del alcance de entrega; no extrapolar Chromium.
+7. Mantener las mejoras POM, los casos manuales CP-01 a CP-15, accesibilidad y candidatos exploratorios como pendientes hasta disponer de evidencia. Jira no se presenta como completado sin tickets.
 
-```bash
-npm run report
-```
-
-### Flujo completo con apertura y transferencia
-
-Configurar en el `.env` local `RUN_OPEN_ACCOUNT_FLOW=true` y `PARABANK_FROM_ACCOUNT` con una cuenta del usuario actual. La cuenta debe cubrir dos depósitos mínimos de apertura más USD 3 para ejecutar los dos escenarios desde el mismo origen. Con un mínimo de USD 100 por apertura, se necesitan al menos USD 203 al inicio. Revisar el saldo actual antes de cada ejecución; los números de cuenta históricos no garantizan fondos disponibles.
-
-Ejecutar una sola vez, en un navegador y sin reintentos:
-
-```bash
-npx playwright test tests/accounts/open-transfer.spec.js --project=chromium --workers=1 --retries=0 --headed --reporter=list,html
-```
-
-El JSON genera dos pruebas independientes: `BANK-E2E-01` abre una cuenta CHECKING y transfiere USD 1.00; `BANK-E2E-02` abre una cuenta SAVINGS y transfiere USD 2.00. Cada prueba inicia sesión, obtiene el número nuevo dinámicamente, concilia saldos, cierra sesión, vuelve a entrar y verifica persistencia. Cada una adjunta `conciliacion` con su ID. Cambiar tipo e importe se hace en el JSON, sin modificar el test. Al finalizar, reemplazar el valor por `RUN_OPEN_ACCOUNT_FLOW=false`: mantener una sola definición de la variable.
-
-Si falla después de enviar una operación, revisar las cuentas antes de repetirla. No hay limpieza automática ni reversión de movimientos.
-
-CP-06 es otro caso: requiere `RUN_BANK_MUTATIONS=true` y dos cuentas distintas en `PARABANK_FROM_ACCOUNT` y `PARABANK_TO_ACCOUNT`; valida confirmación e identificadores, sin conciliación de saldos. Mantenerlo desactivado en ejecuciones generales.
-
-### Reportes y estabilidad
-
-Para conservar salida de terminal y generar HTML, usar `--reporter=list,html`. Usar solo `--reporter=list` no actualiza el HTML y puede dejar visible un reporte anterior.
-
-La autora verificó la suite previa a esta refactorización en Chromium con tres repeticiones: **54 aprobadas y 6 omitidas en 3.1 minutos**, sin fallos ni reintentos. Las seis omisiones son BANK-E2E y CP-06 por tres repeticiones. Ese resultado no acredita las operaciones omitidas ni otros navegadores. Para ejecutar la comprobación de estabilidad actual con las tres variables opcionales en `false` (el número de casos cambió desde ese resultado histórico):
-
-```bash
-npx playwright test --project=chromium --workers=1 --retries=0 --repeat-each=3 --reporter=list,html
-```
-
-Las pruebas omitidas no cuentan como aprobadas. Esta comprobación no acredita repetición del flujo transaccional.
-
-### Comportamiento cuando faltan credenciales
-
-- El caso de acceso válido se omite si falta el usuario o la contraseña.
-- El caso de contraseña incorrecta se omite si falta el usuario.
-- El cierre de sesión utiliza `loggedInPage` y requiere ambas credenciales. Si faltan, la fixture informa un error.
-- Los casos parametrizados de campos vacíos utilizan datos ficticios y no requieren credenciales reales.
-
-## 12. Integración continua
-
-El workflow `.github/workflows/node.js.yml` permite ejecución manual y se activa con pushes a `main` y pull requests dirigidos a `main` o `refactor-pom`.
-
-El proceso:
-
-1. Prepara Node.js 22 según la matriz actual.
-2. Instala las dependencias con `npm ci`.
-3. Instala los navegadores y dependencias de Playwright.
-4. Ejecuta la suite principal con `npm test`.
-5. Conserva el reporte HTML como artefacto durante siete días.
-
-El workflow ya obtiene `PARABANK_USERNAME` y `PARABANK_PASSWORD` desde los secretos del repositorio. Mantener sus valores vigentes cuando cambie la cuenta de prueba; actualizar el `.env` local no actualiza los secretos de GitHub.
-
-La ejecución se serializa para reducir carga sobre el sitio público. El flujo con apertura no se activa desde este workflow por defecto. Se han observado bloqueos temporales y cuentas vacías en ejecuciones anteriores; revisar el reporte antes de atribuir un fallo al código.
-
-Las pruebas autenticadas requieren una cuenta válida en ParaBank. Una ejecución local aprobada no garantiza el mismo resultado en CI.
-
-## 13. Pendientes
-
-- Verificar la ejecución actual en CI con credenciales y cuentas vigentes.
-- Validar BANK-E2E en Firefox y WebKit; no extrapolar el resultado de Chromium.
-- Revalidar estabilidad tras cambios funcionales; la ejecución anterior de Chromium aprobó 54 ejecuciones y omitió 6, sin movimientos de saldo.
-- Ampliar las validaciones intermedias según el alcance; ya se añadieron controles de registro y rechazos de transferencia con datos externos. Mantener su trazabilidad y evidencias.
-- Actualizar la matriz de trazabilidad con los casos automatizados y sus evidencias.
-- Ejecutar CP-01 a CP-15 y guardar fecha, resultado y evidencia.
-- Reproducir OBS-01 a OBS-05 y confirmar las reglas esperadas antes de registrar defectos.
-- Contrastar las peticiones del mapa de flujos en DevTools.
-- Ampliar el registro positivo, recuperación de credenciales, actualización de contacto e historial según el alcance.
-- Completar las revisiones de accesibilidad de teclado, lector de pantalla, contraste y texto alternativo.
-- Registrar casos y defectos en Jira si el espacio del curso está disponible.
-- Mantener las fixtures centrales y revisar que la documentación de compatibilidad siga vigente.
-- Mantener la descripción del PR, la documentación y las evidencias sincronizadas antes de integrar cada cambio a `main`.
-
-## 14. Nota
-
-Este repositorio refleja un proyecto académico en evolución. La documentación distingue el diseño de pruebas, los resultados de ejecución y los hallazgos pendientes de confirmación.
-
-## Adaptación de la estructura del curso
-
-Consultar [la correspondencia y los comandos](docs/adaptacion-profesor.md). Se centralizaron fixtures y se agregaron páginas de registro, cuentas, detalles y transferencia, además de reutilización de sesión en memoria. La validación local observada se detalla en la sección 7. BANK-E2E está aprobado en Chromium; las verificaciones pendientes se mantienen explícitas. La equivalencia del flujo bancario con el checkout del curso debe confirmarse con el profesor.
-
-## IDs y datos del flujo
-
-Los títulos de los tests principales incluyen ID y resultado en español. Login y logout usan AUTH-NEG-04/05, AUTH-POS-01 y AUTH-OUT-01; el formulario usa FORM-01/02/03. Se conservan los IDs existentes de otros flujos. Estos IDs de automatización deben asociarse a los requisitos en la matriz; añadir el prefijo no acredita esa trazabilidad.
-
-BANK-E2E genera un test por entrada y lee `id`, `description`, `accountType` y `transferAmount` de `test-data/bank-flow-data.json`. Las credenciales y la cuenta de origen siguen en variables de entorno; el depósito mínimo y la cuenta nueva se obtienen del sitio. Los datos ficticios se separan del estado del entorno.
-
-### Validación de IDs y datos externos
-
-Las capturas de terminal compartidas por la autora validan en Chromium la rama `refactor/ids-y-datos-flujo`: autenticación y formularios con los nuevos IDs, **10 aprobadas en 29.7 s**; BANK-E2E leyendo el JSON, **1 aprobada en 18.0 s**, sin reintentos. Esta última ejecución incluye apertura, transferencia, conciliación, logout y nuevo login. No acredita Firefox, WebKit ni CI. Al terminar se desactivó `RUN_OPEN_ACCOUNT_FLOW`; mantener una sola definición de cada variable en `.env`.
-
-
-## Entregable transaccional: adaptación a ParaBank
-
-| Pieza del curso | Implementación bancaria |
-|---|---|
-| Flujo completo | Login, apertura, transferencia, conciliación, logout y nuevo login para comprobar persistencia. |
-| Datos externos | Dos conjuntos en `test-data/bank-flow-data.json`: corriente/USD 1.00 y ahorro/USD 2.00. |
-| Page Objects | LoginPage, AccountsPage, AccountDetailsPage, OpenAccountPage y TransferPage. |
-| Fixtures y sesión | Preparación central en `tests/fixtures.js`; sesión guardada en memoria con `bankStorageState` y `savedSessionPage`. Los escenarios transaccionales comprueban un nuevo login explícitamente. |
-| Esperas | Aserciones por estado, `expect.poll`, `toPass`, espera de respuesta y URL; demostraciones de espera fija fuera de la suite principal. |
-| Seguridad | Usuario de demostración y variables locales; entregar `.env.example`, excluir `.env` y datos de sesión. |
-| Evidencia | Reporte HTML y adjunto `conciliacion` por escenario. |
-
-La equivalencia con carrito, dirección, pago y factura de la tienda debe confirmarse con el profesor; el proyecto conserva su dominio bancario.
-
-### Resultados recientes y alcance
-
-| Versión / ejecución | Resultado observado | Límite |
-|---|---|---|
-| Suite Chromium antes de parametrizar BANK-E2E | 21 aprobadas, 3 omitidas, 0 fallidas en 1.4 min; captura de la autora | Incluye el antiguo escenario único. Omite CP-06 y los dos rechazos de transferencia por configuración. |
-| Suite Firefox después del ajuste de saldo con signo | 20 aprobadas y 4 omitidas en 1.1 min; captura de la autora | Operaciones opcionales desactivadas; anterior a los dos escenarios. |
-| Dos escenarios BANK-E2E del PR #15 | 2 aprobadas, 0 fallidas en 13.4 s; 10/11/2026 UTC | Chromium del sistema en entorno de validación, un worker y cero reintentos; no es una ejecución de toda la suite ni acredita otros navegadores o CI. |
-
-Las tres cifras corresponden a ejecuciones distintas y no se suman como casos únicos. El resultado de 21 aprobadas no acredita una ejecución conjunta de la versión con los dos escenarios nuevos.
-
-`RUN_BANK_MUTATIONS=true` habilita CP-06 con dos cuentas distintas configuradas. `RUN_TRANSFER_NEGATIVE=true` habilita los dos casos de importe inválido con esas cuentas; comprueban HTTP 400 y ausencia de cambios en saldos e historial. Son activaciones independientes de `RUN_OPEN_ACCOUNT_FLOW`. Mantener las tres en `false` al finalizar una ejecución dedicada. Con las tres desactivadas, la versión actual omite cinco casos por navegador (dos BANK-E2E, CP-06 y dos negativos); una omisión no cuenta como aprobación.
-
-Para preservar evidencia antes de otra ejecución, copiar la carpeta completa `playwright-report/` fuera de la salida habitual, incluidos sus recursos. Abrirla con `npx playwright show-report RUTA_DEL_REPORTE`. Conservar captura del resumen, detalle de cada BANK-E2E y adjuntos `conciliacion`. No incluir `.env`, contraseñas ni estado de sesión en la entrega. Los reportes nuevos reemplazan la salida anterior: el HTML local generado no implica que esté archivado en GitHub.
+La equivalencia del flujo bancario con los ejemplos de tienda corresponde a la aceptación del profesor. El proyecto conserva su dominio ParaBank.
