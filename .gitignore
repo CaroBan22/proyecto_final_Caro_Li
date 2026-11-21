@@ -11,3 +11,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+/results.json
+/allure-results/
+/allure-report/
+/evidencias-locales/
