@@ -1,9 +1,105 @@
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
 # Reporte de defectos y hallazgos v1 — ParaBank
 
 **Curso:** QA Automatizador · **Sitio:** https://parabank.parasoft.com/parabank/
 **Estado actualizado:** cinco candidatos funcionales de notas exploratorias pendientes de reproducción actual; un hallazgo de autenticación reproducido en automatización local y CI, con reproducción manual reportada; una observación técnica de accesibilidad. La causa del hallazgo de autenticación y su clasificación final siguen pendientes.
 
-**Última evidencia de autenticación:** ejecución local reportada del 13/11/2026 (hora de Lima) y artefacto de CI `playwright-report-22-2.zip`. La fecha y el enlace exactos de la ejecución de CI quedan por registrar.
+**Evidencia de autenticación:** ejecución local aislada reportada del 13/11/2026 (hora de Lima), artefacto de CI `playwright-report-22-2.zip` y nueva corrida completa de Chromium descrita al final de la sección 7. La fecha y el enlace exactos de la ejecución de CI, y la fecha exacta de la nueva corrida, quedan por registrar.
 
 > Las notas de la sesión y la inspección técnica son fuentes distintas. Un comportamiento anotado en la imagen no equivale a una reproducción actual. Las reglas esperadas para monto cero, sobregiro y transferencia a la misma cuenta siguen por confirmar.
 
@@ -12,17 +108,7 @@
 | ID | Hallazgo anotado | Requisito / caso | Estado y validación pendiente |
 |---|---|---|---|
 | OBS-01 | La nota indica que se aceptó transferir S/ 0.00 entre cuentas diferentes. | R05 / CP-07 | Transcrito de la imagen; reproducir y guardar mensaje/saldos antes y después. |
-| OBS-02 | La nota indica que se aceptó transferir S/ 0.00 a la misma cue### Nueva corrida completa en Chromium
-
-Resultado: 20 aprobadas, 2 fallidas y 5 omitidas,
-sin pruebas pendientes de ejecución, en 1,7 minutos.
-
-Fallan AUTH-NEG-04 y AUTH-NEG-05. En ambos contextos
-de error aparecen la misma identidad de cliente, cuentas,
-saldos y Log Out tras introducir credenciales inválidas.
-
-La causa sigue pendiente de investigación.
-Las operaciones bancarias opcionales estaban desactivadas.nta. | R05 / CP-07 y CP-09 | Transcrito; confirmar cuentas seleccionadas, efecto y regla esperada. |
+| OBS-02 | La nota indica que se aceptó transferir S/ 0.00 a la misma cuenta. | R05 / CP-07 y CP-09 | Transcrito; confirmar cuentas seleccionadas, efecto y regla esperada. |
 | OBS-03 | La nota indica que se aceptaron montos mayores al saldo disponible. | R05 / CP-08 | Transcrito; falta saldo inicial/final y política de sobregiro. |
 | OBS-04 | La nota indica que se aceptó una transferencia positiva a la misma cuenta. | R05 / CP-09 | Transcrito; reproducir y revisar movimiento/saldos y regla de negocio. |
 | OBS-05 | La nota indica que no se logró recuperar la cuenta con *Forgot Login Info*. | R07 / CP-11 | Transcrito; probar datos ficticios verificados y guardar mensaje exacto. |
@@ -67,6 +153,7 @@ Para cada candidato, completar al reproducir:
 Los casos CP-07, CP-08, CP-09 y CP-11 permiten reproducir los candidatos funcionales. Registrar el resultado real, incluso si no se reproduce. Para OBS-01 a OBS-05, mantener cada hipótesis como no confirmada mientras falte una regla esperada verificable o evidencia suficiente. AUTH-OBS-01 cuenta con evidencia del comportamiento observado; su causa y clasificación siguen pendientes. Vincular un ticket Jira solo cuando exista; actualmente no se proporciona URL ni evidencia de tickets.
 
 ## 6. Estado de seguimiento
+
 | Registro | Fuente/evidencia | Confirmado como defecto | Jira |
 |---|---|---|---|
 | OBS-01 a OBS-05 | Imagen de notas exploratorias; reproducción pendiente | No | No proporcionado |
@@ -75,10 +162,10 @@ Los casos CP-07, CP-08, CP-09 y CP-11 permiten reproducir los candidatos funcion
 
 ## 7. AUTH-OBS-01: acceso a cuentas tras introducir un usuario inválido
 
-**Identificador principal:** AUTH-OBS-01.  
-**Referencia histórica:** OBS-LOGIN-01. Ambos nombres corresponden al mismo registro; no crear un ticket duplicado.  
-**Estado:** comportamiento reproducido; causa, severidad y prioridad pendientes de investigación.  
-**Módulo / regla / pruebas:** autenticación · RB-05 · AUTH-NEG-04 y AUTH-NEG-05.  
+**Identificador principal:** AUTH-OBS-01.
+**Referencia histórica:** OBS-LOGIN-01. Ambos nombres corresponden al mismo registro; no crear un ticket duplicado.
+**Estado:** comportamiento reproducido; causa, severidad y prioridad pendientes de investigación.
+**Módulo / regla / pruebas:** autenticación · RB-05 · AUTH-NEG-04 y AUTH-NEG-05.
 **Entorno reciente verificado:** ParaBank público, Chromium local y Chromium en GitHub Actions. La evidencia reciente no acredita Firefox ni WebKit.
 
 ### Precondiciones
@@ -88,7 +175,6 @@ Los casos CP-07, CP-08, CP-09 y CP-11 permiten reproducir los candidatos funcion
 - Usar datos ficticios. No registrar previamente el usuario inventado.
 
 ### Pasos de reproducción manual reportada
-
 
 1. Abrir https://parabank.parasoft.com/parabank/ en la ventana privada.
 2. Introducir un usuario inventado no registrado y una contraseña ficticia no vacía.
@@ -104,22 +190,3 @@ Rechazar las credenciales inválidas y mostrar un mensaje de error, sin permitir
 - **CI, AUTH-NEG-04:** después del envío del usuario aleatorio, la petición de login responde HTTP 302 y la navegación a `overview.htm` responde HTTP 200. La página muestra nombre de cliente, una cuenta, saldo y el enlace `Log Out`. La petición al servicio de cuentas responde HTTP 200.
 - **Local, AUTH-NEG-04 y AUTH-NEG-05:** ambas pruebas llegan a `overview.htm` y fallan en la aserción que prohíbe esa URL. En AUTH-NEG-05, los pasos del reporte muestran el llenado de una contraseña incorrecta.
 - **Manual:** la autora reportó que el sitio permite avanzar con credenciales inventadas en ventana privada. Los detalles de acceso a cuentas descritos arriba se verificaron en el artefacto de CI.
-
-Esto acredita el comportamiento observado. Todavía no determina si la causa está en la aplicación, su configuración de demostración, el manejo de sesión u otro componente.
-
-### Evidencia y trazabilidad
-
-- Artefacto de CI revisado: `playwright-report-22-2.zip`, con HTML, capturas, contexto del error y traza.
-- Resultado de esa ejecución: **9 aprobadas, 1 fallida, 2 omitidas y 66 sin ejecutar**. CI se detuvo al primer fallo; AUTH-NEG-05 no llegó a ejecutarse en esa corrida.
-- Validación local aislada reportada el 13/11/2026 (Lima): AUTH-NEG-04 y AUTH-NEG-05 fallidas; duración total de 17,6 segundos según el reporte compartido.
-- PR relacionado: #17, reportes y evidencia por etapas. Su validación específica de REP-01 es independiente de este hallazgo.
-- **Por registrar:** URL y fecha exactas de la ejecución de Actions, SHA del commit ejecutado y versión del navegador. No inferir estos datos del nombre del ZIP.
-- **Jira:** no proporcionado.
-
-### Tratamiento y pendientes
-
-- Conservar las aserciones actuales: las pruebas siguen fallando normalmente; no están marcadas como fallo esperado.
-- Investigar la respuesta de login y el estado de sesión inicial sin realizar transferencias ni modificar saldos.
-- Conservar el ZIP fuera del repositorio público porque contiene información de sesión. Preparar una copia depurada antes de compartir evidencia públicamente.
-- Una vez determinada la causa, registrar la clasificación y verificar la corrección con los mismos casos. No modificar las expectativas únicamente para obtener una ejecución en verde.
-
