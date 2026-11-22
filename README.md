@@ -333,3 +333,13 @@ Queda pendiente verificar las cinco consultas, registrar código de estado, cabe
 La adaptación de los ejemplos de tienda al dominio bancario requiere la aceptación del profesor.
 
 **Estado de cierre:** suite web implementada con resultados y hallazgos documentados; validación final y trabajo de API pendientes.
+
+GitHub Actions ejecutó las pruebas con Node.js 24 en la corrida
+“Node.js CI #40”. Se registraron 9 aprobadas, 1 fallida y
+2 omitidas antes de detenerse por maxFailures: 1.
+Las 69 pruebas restantes no se ejecutaron.
+
+El fallo corresponde a AUTH-NEG-04: después de enviar un usuario
+inválido, la aplicación llegó a overview.htm. Esta ejecución
+confirma el funcionamiento del workflow con Node 24, pero no
+acredita una suite aprobada ni la validación de los tres navegadores.
