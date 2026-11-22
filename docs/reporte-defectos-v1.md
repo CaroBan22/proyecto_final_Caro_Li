@@ -93,4 +93,33 @@ Rechazar las credenciales inválidas y mostrar un mensaje de error, sin permitir
 
 - **CI, AUTH-NEG-04:** después del envío del usuario aleatorio, la petición de login responde HTTP 302 y la navegación a `overview.htm` responde HTTP 200. La página muestra nombre de cliente, una cuenta, saldo y el enlace `Log Out`. La petición al servicio de cuentas responde HTTP 200.
 - **Local, AUTH-NEG-04 y AUTH-NEG-05:** ambas pruebas llegan a `overview.htm` y fallan en la aserción que prohíbe esa URL. En AUTH-NEG-05, los pasos del reporte muestran el llenado de una contraseña incorrecta.
-- **Manual:** la autora reportó que el sitio permite avanzar con credenciales inventadas en ventana privada. Los detalles de acceso a cuentas descritos arriba se verificaron en el artefacto de CI.
+- **Manual:** la autora reportó que el sitio permite avanzar con credenciales inventadas en ventana privada. Los detalles de acceso a cuentas descritos arriba se verificaron en el artefacto de CI.### Nueva reproducción manual — 22/11/2026
+
+La autora reportó que, siguiendo la comprobación en una ventana
+privada nueva, ParaBank permitió acceder después de introducir
+un usuario y una contraseña inventados.
+
+Resultado esperado: rechazar las credenciales inválidas.
+
+Resultado obtenido: se permitió el acceso.
+
+La observación coincide con los fallos automatizados de
+AUTH-NEG-04 y AUTH-NEG-05. La corrida aislada terminó con
+1 prueba aprobada y 2 fallidas en 17,4 segundos.
+
+Estado: comportamiento reproducido manualmente y mediante
+automatización. Causa y clasificación final pendientes.
+Se conservan las expectativas de rechazo de credenciales inválidas.
+
+### Configuración observada — 22/11/2026
+
+En Administration se observó Data Access Mode = SOAP.
+Los campos SOAP Endpoint y REST Endpoint estaban vacíos;
+la pantalla indica que así se utiliza el endpoint predeterminado.
+
+No se modificó la configuración.
+
+El acceso con credenciales inventadas mostró John Smith.
+Queda pendiente verificar si el servicio utilizado explica
+este comportamiento. No se atribuye la causa únicamente
+al protocolo SOAP.
