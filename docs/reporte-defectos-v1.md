@@ -110,3 +110,16 @@ AUTH-NEG-04 y AUTH-NEG-05. La corrida aislada terminó con
 Estado: comportamiento reproducido manualmente y mediante
 automatización. Causa y clasificación final pendientes.
 Se conservan las expectativas de rechazo de credenciales inválidas.
+
+### Configuración observada — 22/11/2026
+
+En Administration se observó Data Access Mode = SOAP.
+Los campos SOAP Endpoint y REST Endpoint estaban vacíos;
+la pantalla indica que así se utiliza el endpoint predeterminado.
+
+No se modificó la configuración.
+
+El acceso con credenciales inventadas mostró John Smith.
+Queda pendiente verificar si el servicio utilizado explica
+este comportamiento. No se atribuye la causa únicamente
+al protocolo SOAP.
