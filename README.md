@@ -6,11 +6,11 @@ Proyecto académico del curso QA Automatizador de Tecsup. Automatiza pruebas web
 
 Adapta los ejemplos de tienda del curso al dominio bancario: autenticación, consulta de cuentas y apertura con transferencia. Incluye validaciones de registro, transferencias inválidas, evidencia por etapas y comprobación de persistencia después de cerrar sesión y volver a entrar.
 
-La organización utiliza Page Object Model (POM), fixtures compartidas, datos JSON externos y esperas por condición. Las comprobaciones de negocio permanecen en los tests. Existen mejoras pendientes para centralizar selectores y secuencias todavía presentes en las pruebas.
+El proyecto utiliza Page Object Model (POM), fixtures compartidas, datos JSON externos y esperas por condición. Las comprobaciones de negocio permanecen en los tests. Existen mejoras pendientes para centralizar selectores y secuencias repetidas.
 
-**Estado:** suite web implementada con validaciones parciales documentadas. La validación final conjunta sigue pendiente. Existe un hallazgo abierto de acceso con credenciales inválidas; las expectativas de rechazo se conservan.
+**Estado:** suite web implementada con validaciones parciales documentadas. GitHub Actions ejecutó pruebas con Node.js 24, pero la ejecución se detuvo por un fallo de autenticación. La validación final de todos los flujos continúa pendiente.
 
-La colección de API en Postman se encuentra en preparación y todavía requiere completar sus verificaciones y exportación.
+La colección de API en Postman se encuentra en preparación y requiere completar sus verificaciones y exportación.
 
 ## 2. Requisitos
 
@@ -22,7 +22,7 @@ La colección de API en Postman se encuentra en preparación y todavía requiere
 - Usuario de demostración vigente para las pruebas autenticadas.
 - Identidad, cuentas y saldo verificados antes de ejecutar operaciones bancarias.
 
-Dependencias declaradas:
+Dependencias principales declaradas:
 
 | Dependencia | Rango declarado |
 |---|---|
@@ -33,11 +33,11 @@ Dependencias declaradas:
 
 Los rangos declarados no sustituyen las versiones resueltas en `package-lock.json`.
 
-El workflow está configurado para Node.js 24. La ejecución de CI con esta versión queda pendiente de verificación.
+El workflow utiliza Node.js 24. Su ejecución está acreditada por la corrida “Node.js CI #40”; sus resultados se describen en el apartado 7.
 
 ## 3. Instalación
 
-Desde la raíz del repositorio, instalar las dependencias reproducibles:
+Desde la raíz del repositorio, instalar las dependencias:
 
 ```bash
 npm ci
@@ -77,7 +77,7 @@ Completar las credenciales con una cuenta de demostración vigente. Los valores 
 | Variable | Uso |
 |---|---|
 | `BASE_URL` | Dirección de la aplicación web. |
-| `PARABANK_USERNAME` | Usuario de demostración para las pruebas autenticadas. |
+| `PARABANK_USERNAME` | Usuario de demostración. |
 | `PARABANK_PASSWORD` | Contraseña del usuario de demostración. |
 | `PARABANK_FROM_ACCOUNT` | Cuenta de origen perteneciente al cliente verificado. |
 | `PARABANK_TO_ACCOUNT` | Cuenta distinta de destino para CP-06 y pruebas negativas de transferencia. |
@@ -96,11 +96,9 @@ Las credenciales y la cuenta de origen se obtienen del entorno. La cuenta nueva 
 
 ### Protección de datos
 
-`.env` y los resultados generados están excluidos de Git.
+`.env` y los resultados generados están excluidos de Git. Utilizar únicamente datos de demostración y revisar capturas, trazas y adjuntos antes de publicarlos.
 
-No publicar credenciales, cookies, estado de sesión ni trazas sin revisar. Utilizar únicamente datos de demostración.
-
-Actualizar `.env` no actualiza los secretos de GitHub Actions. El workflow utiliza los secretos `PARABANK_USERNAME` y `PARABANK_PASSWORD` configurados en GitHub.
+Actualizar `.env` no actualiza los secretos de GitHub Actions. El workflow obtiene las credenciales de los secretos `PARABANK_USERNAME` y `PARABANK_PASSWORD`.
 
 ### Precondición para operaciones bancarias
 
@@ -126,7 +124,7 @@ npm test -- --list
 | `npm run test:ui` | Abre la interfaz interactiva de Playwright. |
 | `npm run test:auth` | Ejecuta únicamente `tests/auth/login.spec.js`. |
 | `npm run report` | Abre el último reporte HTML de Playwright. |
-| `npm run report:allure` | Genera y abre Allure a partir de los resultados existentes. No ejecuta pruebas. |
+| `npm run report:allure` | Genera y abre Allure a partir de resultados existentes; no ejecuta pruebas. |
 
 ### Ejecución general
 
@@ -156,9 +154,9 @@ Este comando ejecuta los tres casos de `login.spec.js`. No incluye toda la carpe
 
 Habilitar únicamente las opciones necesarias después de verificar identidad, cuentas y saldo:
 
-- `RUN_OPEN_ACCOUNT_FLOW=true`: habilita los dos escenarios de apertura y transferencia.
-- `RUN_BANK_MUTATIONS=true`: habilita la transferencia entre cuentas existentes.
-- `RUN_TRANSFER_NEGATIVE=true`: habilita los casos de importes inválidos.
+- `RUN_OPEN_ACCOUNT_FLOW=true`: apertura y transferencia.
+- `RUN_BANK_MUTATIONS=true`: transferencia entre cuentas existentes.
+- `RUN_TRANSFER_NEGATIVE=true`: casos de importes inválidos.
 
 Para ejecutar el archivo de apertura y transferencia:
 
@@ -172,8 +170,6 @@ Las operaciones que crean cuentas o transfieren fondos se ejecutan sin reintento
 
 ### Evidencia y conservación
 
-La configuración genera:
-
 | Ubicación | Contenido |
 |---|---|
 | `playwright-report/` | Reporte HTML. |
@@ -185,7 +181,7 @@ Las capturas automáticas se guardan al fallar. Las trazas se conservan al falla
 
 Los resultados generados están excluidos de Git. Para conservar una corrida, copiar sus reportes a una carpeta local distinta antes de ejecutar otras pruebas.
 
-`npm run report:allure` utiliza los resultados existentes. La opción `--clean` limpia la salida del reporte; no elimina los resultados crudos acumulados en `allure-results/`.
+`npm run report:allure` utiliza los resultados existentes. Su opción `--clean` limpia la salida del reporte; no elimina los resultados crudos acumulados en `allure-results/`.
 
 ### Integración continua
 
@@ -197,9 +193,9 @@ El workflow `.github/workflows/node.js.yml` está configurado para:
 - Ejecutar `npm test`.
 - Conservar el reporte HTML como artefacto durante siete días, incluso si las pruebas fallan.
 
-La configuración actual detiene la ejecución en CI después de la primera prueba fallida. Las pruebas restantes pueden quedar sin ejecutar.
+La configuración actual utiliza un worker y detiene la ejecución en CI después de la primera prueba fallida mediante `maxFailures: 1`.
 
-La actualización del workflow a Node.js 24 está implementada; falta verificar su ejecución en GitHub Actions. Un commit o una fusión no acreditan por sí solos que las pruebas hayan aprobado.
+La corrida “Node.js CI #40” ejecutó pruebas con Node.js 24 y falló en `AUTH-NEG-04`. El workflow funciona, pero esta ejecución no acredita una suite aprobada ni la validación de todos los navegadores.
 
 ## 6. Estructura del proyecto
 
@@ -227,13 +223,13 @@ La actualización del workflow a Node.js 24 está implementada; falta verificar 
 
 La configuración delimita las pruebas de la suite principal. Tener un archivo de ejemplo en el repositorio no significa que participe en esa ejecución.
 
-Las fixtures de sesión guardada utilizan un contexto explícito. Los casos negativos de login emplean las fixtures habituales de página y no solicitan esa sesión guardada.
+Las fixtures de sesión guardada utilizan un contexto explícito. Los casos negativos de login emplean las fixtures habituales de página y no solicitan esa sesión guardada. No se encontró un `storageState` global en la configuración revisada.
 
 ## 7. Métricas, hallazgos y pendientes
 
-### Última corrida general reportada
+### Corrida general local reportada
 
-Resultado comunicado por la autora mediante la salida de terminal. Corresponde a Chromium con las operaciones opcionales desactivadas; no acredita la ejecución de los flujos omitidos.
+Resultado comunicado mediante la salida de terminal. Corresponde a Chromium con las operaciones opcionales desactivadas.
 
 | Métrica | Resultado |
 |---|---:|
@@ -251,7 +247,7 @@ Comando utilizado:
 npm run test:chromium -- --retries=0 --max-failures=0
 ```
 
-Fecha y commit exactos de esta corrida: pendientes de completar con el registro de la ejecución.
+Fecha y commit exactos: pendientes de completar con el registro de esa ejecución.
 
 La autora reportó conservar el HTML y el JSON en:
 
@@ -261,9 +257,7 @@ evidencias-locales/corrida-completa-chromium/
 
 Esta ubicación es local y no constituye un enlace público de entrega.
 
-### Validación aislada reciente del login
-
-La salida compartida de la ejecución aislada mostró:
+### Validación aislada del login
 
 | Métrica | Resultado |
 |---|---:|
@@ -274,19 +268,43 @@ La salida compartida de la ejecución aislada mostró:
 | Duración mostrada | 17,4 segundos |
 | Reintentos configurados | 0 |
 
-Los dos casos negativos llegaron a `overview.htm`. Sus snapshots mostraron John Smith, cuentas y el enlace `Log Out`.
+Los casos `AUTH-NEG-04` y `AUTH-NEG-05` llegaron a `overview.htm`. Sus snapshots mostraron John Smith, cuentas y el enlace `Log Out`.
 
 La aprobación del caso positivo acredita las comprobaciones implementadas de navegación y contenido. No acredita por sí sola que la identidad del cliente sea la esperada.
 
+### GitHub Actions con Node.js 24
+
+Resultado observado en la corrida “Node.js CI #40”, correspondiente al PR #18 y al commit de origen `f540c1f`.
+
+| Métrica | Resultado |
+|---|---:|
+| Pruebas planificadas | 81 |
+| Aprobadas | 9 |
+| Fallidas | 1 |
+| Omitidas antes de la interrupción | 2 |
+| Sin ejecutar por interrupción | 69 |
+| Duración del job mostrada | 1 minuto y 12 segundos |
+| Reintentos configurados | 0 |
+
+Las 81 pruebas planificadas corresponden a 27 casos en los tres proyectos de navegador configurados.
+
+La ejecución se detuvo en Chromium después de fallar `AUTH-NEG-04`, debido a `maxFailures: 1`. El usuario inválido enviado por la prueba terminó en `overview.htm`.
+
+Esta corrida confirma que GitHub Actions ejecutó pruebas con Node.js 24. No acredita una suite aprobada ni la validación de Firefox y WebKit.
+
+El enlace permanente de la ejecución queda pendiente de incorporar.
+
 ### Fallos y omisiones
 
-- `AUTH-NEG-04`: la prueba con usuario inválido llega a `overview.htm` y falla la expectativa de rechazo.
-- `AUTH-NEG-05`: la prueba con contraseña incorrecta llega a `overview.htm` y falla la expectativa de rechazo.
-- Dos escenarios de apertura con transferencia quedaron omitidos en la corrida general.
+- `AUTH-NEG-04`: el usuario inválido llega a `overview.htm` y falla la expectativa de rechazo.
+- `AUTH-NEG-05`: la contraseña incorrecta llega a `overview.htm` y falla la expectativa de rechazo.
+- Dos escenarios de apertura con transferencia quedaron omitidos en la corrida general local.
 - Una transferencia entre cuentas existentes quedó omitida.
 - Dos casos de importes inválidos quedaron omitidos.
 
-Las cinco omisiones corresponden a opciones desactivadas. No se contabilizan como aprobaciones.
+Las cinco omisiones locales corresponden a opciones desactivadas. No se contabilizan como aprobaciones.
+
+Las pruebas no ejecutadas por la interrupción de CI se distinguen de las omisiones configuradas.
 
 El comportamiento de autenticación se documenta en [el reporte de hallazgos](docs/reporte-defectos-v1.md). Las expectativas de rechazo se mantienen.
 
@@ -296,7 +314,7 @@ El 22/11/2026, la autora reportó que el sitio permitía acceder como John Smith
 
 En Administration se observó `Data Access Mode = SOAP`, con los campos de endpoints vacíos. La pantalla indica que los valores vacíos utilizan los endpoints predeterminados.
 
-La observación del modo SOAP no demuestra por sí sola que exista un servicio simulado ni determina la causa del acceso. La causa y clasificación final del hallazgo permanecen pendientes.
+El modo SOAP no demuestra por sí solo que exista un servicio simulado ni determina la causa del acceso. La causa y clasificación final del hallazgo permanecen pendientes.
 
 ### Validaciones separadas
 
@@ -308,38 +326,44 @@ También existen validaciones anteriores del flujo bancario. Esos resultados no 
 
 La colección de exploración adapta las consultas al dominio bancario:
 
-1. Consultar cliente.
-2. Listar cuentas del cliente.
-3. Consultar detalle de cuenta.
-4. Listar movimientos de una cuenta.
-5. Consultar detalle de un movimiento.
+| Consulta | Método y ruta |
+|---|---|
+| Consultar cliente | `GET /customers/{customerId}` |
+| Listar cuentas del cliente | `GET /customers/{customerId}/accounts` |
+| Consultar detalle de cuenta | `GET /accounts/{accountId}` |
+| Listar movimientos | `GET /accounts/{accountId}/transactions` |
+| Consultar detalle de movimiento | `GET /transactions/{transactionId}` |
 
-Estas consultas utilizan GET y no requieren Body en la petición. Los identificadores se envían en la ruta y deben corresponder a datos de prueba vigentes.
+URL base de la API:
+
+```text
+https://parabank.parasoft.com/parabank/services/bank
+```
+
+Estas consultas no requieren Body en la petición. Los identificadores se envían en la ruta y deben corresponder a datos de prueba vigentes.
+
+Para solicitar JSON, utilizar:
+
+```text
+Accept: application/json
+```
+
+Las variables de Postman se configuran en su colección o entorno. Postman no lee automáticamente el `.env` de Playwright.
 
 Queda pendiente verificar las cinco consultas, registrar código de estado, cabeceras, estructura y valores, y exportar la colección y el entorno revisados.
 
 ### Pendientes de cierre
 
-1. Completar fecha, commit y referencias de evidencia de las ejecuciones documentadas.
+1. Completar fechas, commits y enlaces de evidencia que todavía falten.
 2. Investigar la causa del acceso con credenciales inválidas.
 3. Verificar la identidad de la sesión antes de realizar operaciones bancarias.
 4. Validar los escenarios transaccionales actuales con cuentas y saldo comprobados.
 5. Conservar evidencia separada de cada ejecución dedicada.
 6. Revisar selectores y secuencias repetidas para mejorar Page Objects y fixtures.
-7. Verificar la ejecución de GitHub Actions con Node.js 24 y registrar sus resultados.
+7. Completar la validación web pendiente; CI con Node.js 24 ya se ejecutó y registró el fallo descrito.
 8. Completar la colección de Postman, sus verificaciones y exportación.
-9. Actualizar las métricas después de la siguiente ejecución, conservando el contexto histórico.
+9. Actualizar las métricas después de nuevas ejecuciones, conservando el contexto histórico.
 
 La adaptación de los ejemplos de tienda al dominio bancario requiere la aceptación del profesor.
 
-**Estado de cierre:** suite web implementada con resultados y hallazgos documentados; validación final y trabajo de API pendientes.
-
-GitHub Actions ejecutó las pruebas con Node.js 24 en la corrida
-“Node.js CI #40”. Se registraron 9 aprobadas, 1 fallida y
-2 omitidas antes de detenerse por maxFailures: 1.
-Las 69 pruebas restantes no se ejecutaron.
-
-El fallo corresponde a AUTH-NEG-04: después de enviar un usuario
-inválido, la aplicación llegó a overview.htm. Esta ejecución
-confirma el funcionamiento del workflow con Node 24, pero no
-acredita una suite aprobada ni la validación de los tres navegadores.
+**Estado de cierre:** suite web implementada; documentación consolidada y ejecución de CI con Node.js 24 comprobada. Permanecen abiertos el hallazgo de autenticación, la validación final de los flujos bancarios y el trabajo de API.
